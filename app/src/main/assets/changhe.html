@@ -198,25 +198,27 @@ html[data-theme="night"] .desktop{background:#0A1210;border:1px solid var(--line
 .wdemo-wide{width:100%;aspect-ratio:2.06/1;margin-top:6px}
 .wdemo-note{flex:1;display:flex;flex-direction:column;justify-content:center;font-size:11px;color:var(--ink-3);line-height:2;letter-spacing:.04em}
 .wdemo-note b{font-family:var(--mono);color:var(--jade);font-weight:500}
-.wd-top2{display:flex;justify-content:space-between;align-items:flex-start}
-.wd-cap{font-family:var(--serif);font-size:10px;letter-spacing:.22em;color:var(--jade-2)}
-.wd-seal{writing-mode:vertical-rl;font-family:var(--serif);font-size:11px;letter-spacing:.34em;color:var(--jade);opacity:.45;line-height:1}
-.wd-main{display:flex;align-items:baseline;gap:3px;margin-top:5px}
-.wd-num{font-family:var(--serif);color:var(--jade);font-size:34px;line-height:.86;font-variant-numeric:tabular-nums}
-.wdemo-wide .wd-num{font-size:44px}
-.wd-unit{font-family:var(--serif);color:var(--jade-2);font-size:13px;margin-bottom:5px}
-.wd-rest{margin-left:auto;align-self:flex-end;font-family:var(--serif);font-size:11px;color:var(--ink-2);text-align:right;line-height:1.5;max-width:54%}
-.wdemo-wide .wd-rest{font-size:12px}
-.wd-ahead{font-family:var(--serif);font-size:12px;color:var(--ink-2);margin-top:5px;letter-spacing:.02em}
-.wdemo-wide .wd-ahead{font-size:14px}
-.wd-line{height:1px;background:var(--line);margin:9px 0 8px}
-.wd-bot{display:flex;justify-content:space-between;align-items:baseline}
-.wd-mark{font-family:var(--serif);font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wdemo-wide .wd-mark{font-size:12px}
-.wd-days{font-family:var(--serif);font-size:14px;color:var(--jade);white-space:nowrap}
-.wdemo-wide .wd-days{font-size:17px}
-.wd-wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:16px;pointer-events:none;opacity:.55}
-.wd-wave path{stroke:var(--jade-2);fill:none;stroke-width:1.1;stroke-linecap:round}
+/* 演示卡与桌面实际渲染对齐：浅色素白 / 深色夜航，随页面主题切换 */
+.wd-card{display:flex;flex-direction:column;justify-content:center;height:100%}
+.wd-lbl{font-family:var(--serif);color:var(--ink-3);font-size:11px;letter-spacing:.14em}
+.wdemo-wide .wd-lbl{font-size:12px}
+.wd-toprow{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px}
+.wd-ahead{font-family:var(--serif);color:var(--ink-2);font-size:12px;text-align:right}
+.wd-hero{display:flex;align-items:baseline;gap:2px;margin-top:3px}
+.wd-num{font-family:var(--serif);color:var(--ink);font-weight:700;font-size:30px;line-height:1}
+.wdemo-wide .wd-num{font-size:34px}
+.wd-unit{font-family:var(--serif);color:var(--ink-3);font-size:13px}
+.wd-sub{font-family:var(--serif);color:var(--ink-3);font-size:11px;margin-top:2px}
+.wdemo-wide .wd-sub{font-size:13px;margin-left:12px;margin-top:0;align-self:center}
+.wd-ripple{height:10px;margin:8px 0;background-repeat:repeat-x;background-position:center;background-size:auto 10px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cpath d='M0 5 Q15 0 30 5 T60 5 T90 5 T120 5' fill='none' stroke='%23CBD5D0' stroke-width='2'/%3E%3C/svg%3E")}
+html[data-theme="night"] .wd-ripple{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10'%3E%3Cpath d='M0 5 Q15 0 30 5 T60 5 T90 5 T120 5' fill='none' stroke='%23ffffff' stroke-opacity='0.20' stroke-width='2'/%3E%3C/svg%3E")}
+.wd-foot{display:flex;align-items:baseline;justify-content:space-between;margin-top:2px}
+.wd-foot .wd-lbl{letter-spacing:.1em}
+.wd-mark{font-family:var(--serif);color:var(--ink-2);font-size:12px;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.wdemo-wide .wd-mark{font-size:13px}
+.wd-days{font-family:var(--serif);color:var(--ink);font-weight:700;font-size:15px;white-space:nowrap;margin-left:8px}
+.wdemo-wide .wd-days{font-size:18px}
 .field.tap{cursor:pointer}
 .field-val{font-family:var(--mono);font-size:13px;color:var(--jade);text-align:right;white-space:nowrap}
 .info-box{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:15px 17px;margin-top:18px}
@@ -392,23 +394,24 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
         <div class="desktop-cap">小尺寸 · 2 × 2</div>
         <div class="wdemo-wrap">
           <div class="wdemo wdemo-sm">
-            <div class="wd-top2"><span class="wd-cap">已在此间</span><span class="wd-seal">光阴</span></div>
-            <div class="wd-main"><span class="wd-num" id="wSmYear">—</span><span class="wd-unit">年</span><span class="wd-rest" id="wSmRest"></span></div>
-            <div class="wd-ahead" id="wSmL2">前方尚有 —</div>
-            <div class="wd-line"></div>
-            <div class="wd-bot"><span class="wd-mark" id="wSmMark">最近 · —</span><span class="wd-days" id="wSmDays">—</span></div>
-            <svg class="wd-wave" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0 11 Q14 5 28 11 T56 11 T84 11 T100 11"/><path d="M0 14 Q20 9 40 14 T80 14 T100 14" opacity=".6"/></svg>
+            <div class="wd-card">
+              <div class="wd-lbl">已在此间</div>
+              <div class="wd-hero"><span class="wd-num" id="wSmNum">—</span><span class="wd-unit">年</span></div>
+              <div class="wd-sub" id="wSmSub">—</div>
+              <div class="wd-ripple"></div>
+              <div class="wd-foot"><span class="wd-lbl">最近</span><span class="wd-mark" id="wSmMark">—</span><span class="wd-days" id="wSmDays">—</span></div>
+            </div>
           </div>
           <div class="wdemo-note">2 × 2<br>桌面占两格<br>正方形</div>
         </div>
         <div class="desktop-cap" style="margin-top:18px">中尺寸 · 4 × 2</div>
           <div class="wdemo wdemo-wide">
-            <div class="wd-top2"><span class="wd-cap">已在此间</span><span class="wd-seal">光阴</span></div>
-            <div class="wd-main"><span class="wd-num" id="wWideYear">—</span><span class="wd-unit">年</span><span class="wd-rest" id="wWideRest"></span></div>
-            <div class="wd-ahead" id="wWideL2">前方尚有 —</div>
-            <div class="wd-line"></div>
-            <div class="wd-bot"><span class="wd-mark" id="wWideMark">最近 · —</span><span class="wd-days" id="wWideDays">—</span></div>
-            <svg class="wd-wave" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0 11 Q14 5 28 11 T56 11 T84 11 T100 11"/><path d="M0 14 Q20 9 40 14 T80 14 T100 14" opacity=".6"/></svg>
+            <div class="wd-card">
+              <div class="wd-toprow"><span class="wd-lbl">已在此间</span><span class="wd-ahead" id="wWideAhead">—</span></div>
+              <div class="wd-hero"><span class="wd-num" id="wWideNum">—</span><span class="wd-unit">年</span><span class="wd-sub" id="wWideSub">—</span></div>
+              <div class="wd-ripple"></div>
+              <div class="wd-foot"><span class="wd-lbl">最近</span><span class="wd-mark" id="wWideMark">—</span><span class="wd-days" id="wWideDays">—</span></div>
+            </div>
           </div>
       </div>
 
@@ -1266,13 +1269,16 @@ function fillDemo(){
   }
   function durZh(p){ var s=p.y+" 年"; if(p.mo>0||p.d>0){ s+=" 零 "; if(p.mo) s+=p.mo+" 个月 "; if(p.d) s+=p.d+" 天"; } return s; }
   var livedRest = "";
-  if(lived.mo>0 || lived.d>0){ livedRest = "零 "; if(lived.mo) livedRest += lived.mo+" 个月 "; if(lived.d) livedRest += lived.d+" 天"; }
-  var aheadSent = !ahead ? "前方尚有 · 且看此刻" : ("前方尚有 "+durZh(ahead));
-  $("wSmYear").textContent=lived.y;          $("wWideYear").textContent=lived.y;
-  $("wSmRest").textContent=livedRest;         $("wWideRest").textContent=livedRest;
-  $("wSmL2").textContent=aheadSent;           $("wWideL2").textContent=aheadSent;
-  $("wSmMark").textContent=markName;          $("wWideMark").textContent=markName;
-  $("wSmDays").textContent=markDays;          $("wWideDays").textContent=markDays;
+  if(lived.mo>0 || lived.d>0){ livedRest = " 零 "; if(lived.mo) livedRest += lived.mo+" 个月 "; if(lived.d) livedRest += lived.d+" 天"; }
+  function subZh(p){ var s=""; if(p.mo>0) s+=p.mo+" 个月 "; if(p.d>0) s+=p.d+" 天"; if(!s) s="整"; return s.trim(); }
+  var livedSub = subZh(lived);
+  var aheadText = !ahead ? "且看此刻" : "前方尚有 "+ahead.y+" 年 零 "+ahead.mo+" 个月"+(ahead.d>0?" "+ahead.d+" 天":"");
+  var markNameShown = nearestName ? nearestName : "未设置";
+  $("wSmNum").textContent=lived.y;        $("wWideNum").textContent=lived.y;
+  $("wSmSub").textContent=livedSub;       $("wWideSub").textContent=livedSub;
+  $("wWideAhead").textContent=aheadText;
+  $("wSmMark").textContent=markNameShown;   $("wWideMark").textContent=markNameShown;
+  $("wSmDays").textContent=markDays;        $("wWideDays").textContent=markDays;
 }
 
 function tick(){
@@ -1385,11 +1391,10 @@ $("setBirth").addEventListener("change",function(){
   }
   save(); render(); toast("出生日期已记下");
 });
-/* 想走到的年岁：点击弹出数字框 + 确定 */
+/* 想走到的年岁：点击弹出数字框（不自动弹键盘，自己点输入框才弹） */
 $("fHorizon").addEventListener("click",function(){
   $("numInput").value = S.horizon;
   $("numSheetBg").classList.add("show");
-  setTimeout(function(){ try{ $("numInput").focus(); }catch(e){} }, 200);
 });
 $("numCancel").addEventListener("click",function(){ $("numSheetBg").classList.remove("show"); });
 $("numSheetBg").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });

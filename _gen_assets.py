@@ -86,43 +86,77 @@ for p in [r'C:\Windows\Fonts\msyh.ttc', r'C:\Windows\Fonts\simsun.ttc', r'C:\Win
     if F:
         break
 
+def ripple(path, color=(203, 213, 208, 255)):
+    # 浅色主题的「水纹」分隔：透明底上一道写意正弦波
+    import math
+    W, H = 600, 40
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    y0 = H // 2
+    amp = 5
+    wl = 130.0
+    pts = [(x, y0 + amp * math.sin(2 * math.pi * x / wl)) for x in range(W)]
+    d.line(pts, fill=color, width=3)
+    im.save(path)
+
+
 def preview(path, W, H, compact):
-    # 系统小组件选择器缩略图：与原生 widget 实际渲染对齐
-    # —— 标签（已在此间/前方尚有/最近）jade 加粗为视觉重点，数值墨色退为次一级
+    # 系统小组件选择器缩略图：与原生 widget 实际渲染对齐（素白浅色版）
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     d.rounded_rectangle([6, 6, W - 6, H - 6], radius=24,
-                        fill=(244, 245, 241, 255),
+                        fill=(252, 252, 250, 255),
                         outline=(228, 235, 231, 255), width=2)
     if not F:
         d.line([(26, H // 2), (W - 26, H // 2)], fill=(228, 235, 231, 255), width=2)
         im.save(path); return
-    sz = 12 if compact else 14
-    fb_label = font(r'C:\Windows\Fonts\msyh.ttc', sz, index=1) or font(r'C:\Windows\Fonts\msyh.ttc', sz) or F
-    f_val = font(r'C:\Windows\Fonts\msyh.ttc', sz) or F
-    f_mark = font(r'C:\Windows\Fonts\msyh.ttc', 12 if compact else 13) or F
-    x = 16
-    y0 = 20 if compact else 18
-    lh = 24 if compact else 28
 
-    def row(yy, lab, val):
-        d.text((x, yy), lab, font=fb_label, fill=JADE + (255,))
-        lw = d.textlength(lab, font=fb_label)
-        d.text((x + lw + 8, yy), val, font=f_val, fill=INK2 + (255,))
+    f_lbl = font(r'C:\Windows\Fonts\msyh.ttc', 12) or F
+    f_hero = font(r'C:\Windows\Fonts\msyh.ttc', 44, index=1) or F
+    f_unit = font(r'C:\Windows\Fonts\msyh.ttc', 18) or F
+    f_sub = font(r'C:\Windows\Fonts\msyh.ttc', 16) or F
+    f_mark = font(r'C:\Windows\Fonts\msyh.ttc', 15) or F
+    f_days = font(r'C:\Windows\Fonts\msyh.ttc', 22, index=1) or F
 
-    row(y0, '已在此间', '24 年 零 4 个月 30 天')
-    row(y0 + lh, '前方尚有', '55 年 零 7 个月 1 天')
-    line_y = y0 + lh * 2 + 12
-    d.line([(x, line_y), (W - 16, line_y)], fill=(228, 235, 231, 255), width=2)
-    by = line_y + 12
-    d.text((x, by), '最近', font=fb_label, fill=JADE + (255,))
-    nlw = d.textlength('最近', font=fb_label)
-    d.text((x + nlw + 8, by), '元旦', font=f_mark, fill=INK2 + (255,))
-    d.text((W - 56, by - 1), '47 天', font=f_mark, fill=JADE + (255,))
+    LABEL = INK3 + (255,)
+    HERO = INK + (255,)
+    SUB = INK3 + (255,)
+    MARK = INK2 + (255,)
+    RIPPLE = (203, 213, 208, 255)
+
+    import math
+    if compact:
+        # 2×2 小尺寸：竖向堆叠
+        x = 18
+        d.text((x, 22), '已在此间', font=f_lbl, fill=LABEL)
+        d.text((x, 44), '24', font=f_hero, fill=HERO)
+        d.text((x + 52, 70), '年', font=f_unit, fill=SUB)
+        d.text((x, 92), '4 个月 30 天', font=f_sub, fill=SUB)
+        ry = 122
+        pts = [(x + i, ry + 4 * math.sin(2 * math.pi * (x + i) / 60)) for i in range(W - 2 * x)]
+        d.line(pts, fill=RIPPLE, width=3)
+        d.text((x, 140), '最近', font=f_lbl, fill=LABEL)
+        d.text((x + 38, 140), '元旦', font=f_mark, fill=MARK)
+        d.text((W - 70, 138), '47 天', font=f_days, fill=HERO)
+    else:
+        # 4×2 中尺寸：顶行 已在此间 / 前方尚有；大数 + 次行同一行
+        x = 22
+        d.text((x, 20), '已在此间', font=f_lbl, fill=LABEL)
+        d.text((W - 210, 20), '前方尚有 55 年 零 7 个月', font=f_mark, fill=MARK)
+        d.text((x, 44), '24', font=f_hero, fill=HERO)
+        d.text((x + 56, 70), '年', font=f_unit, fill=SUB)
+        d.text((x + 92, 70), '4 个月 30 天', font=f_sub, fill=SUB)
+        ry = 112
+        pts = [(x + i, ry + 4 * math.sin(2 * math.pi * (x + i) / 70)) for i in range(W - 2 * x)]
+        d.line(pts, fill=RIPPLE, width=3)
+        d.text((x, 130), '最近', font=f_lbl, fill=LABEL)
+        d.text((x + 42, 130), '元旦', font=f_mark, fill=MARK)
+        d.text((W - 84, 128), '47 天', font=f_days, fill=HERO)
     im.save(path)
 
 
 DRAW = os.path.join(ROOT, 'app', 'src', 'main', 'res', 'drawable')
+ripple(os.path.join(DRAW, 'widget_ripple.png'))
 preview(os.path.join(DRAW, 'widget_preview_small.png'), 250, 250, True)
 preview(os.path.join(DRAW, 'widget_preview_wide.png'), 420, 210, False)
-print('widget previews (small 2x2 / wide 4x2) ok, font:', bool(F))
+print('widget assets (ripple + previews) ok, font:', bool(F))

@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/widget_bg"
     android:gravity="center_vertical"
+    android:background="@drawable/widget_bg_light"
     android:paddingLeft="18dp"
     android:paddingRight="18dp"
-    android:paddingTop="14dp"
-    android:paddingBottom="14dp">
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
+    <!-- 顶行：已在此间（左） / 前方尚有 55 年零 7 个月（右） -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,67 +19,90 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="58dp"
+            android:id="@+id/w_lbl_lived"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已在此间"
-            android:textColor="@color/jade"
-            android:textSize="13sp"
-            android:textStyle="bold"
+            android:textColor="@color/w_label_light"
+            android:textSize="11sp"
             android:singleLine="true"
             android:fontFamily="serif" />
 
         <TextView
-            android:id="@+id/w_lived_val"
+            android:id="@+id/w_ahead"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:text="—"
-            android:textColor="@color/ink2"
-            android:textSize="14sp"
+            android:layout_marginLeft="12dp"
+            android:gravity="end"
+            android:text="前方尚有 55 年 零 7 个月"
+            android:textColor="@color/w_mark_light"
+            android:textSize="12sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
     </LinearLayout>
 
+    <!-- 大数 24 年（左） + 4 个月 30 天（右） -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="7dp">
+        android:baselineAligned="true"
+        android:layout_marginTop="3dp">
 
         <TextView
-            android:layout_width="58dp"
+            android:id="@+id/w_hero_num"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="前方尚有"
-            android:textColor="@color/jade"
-            android:textSize="13sp"
+            android:text="24"
+            android:textColor="@color/w_hero_light"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:singleLine="true"
             android:fontFamily="serif" />
 
         <TextView
-            android:id="@+id/w_ahead_val"
-            android:layout_width="0dp"
+            android:id="@+id/w_hero_unit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:text="—"
-            android:textColor="@color/ink2"
-            android:textSize="14sp"
+            android:text="年"
+            android:textColor="@color/w_sub_light"
+            android:textSize="12sp"
+            android:layout_marginLeft="3dp"
+            android:fontFamily="serif" />
+
+        <TextView
+            android:id="@+id/w_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4 个月 30 天"
+            android:textColor="@color/w_sub_light"
+            android:textSize="11sp"
+            android:layout_marginLeft="12dp"
             android:singleLine="true"
-            android:ellipsize="end"
             android:fontFamily="serif" />
     </LinearLayout>
 
-    <TextView
+    <!-- 水纹（浅色）/ 分隔线（深色） -->
+    <ImageView
+        android:id="@+id/w_ripple"
+        android:layout_width="match_parent"
+        android:layout_height="9dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/widget_ripple" />
+
+    <View
+        android:id="@+id/w_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/widget_line" />
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="@color/w_line_dark"
+        android:visibility="gone" />
 
+    <!-- 最近 元旦 / 47 天 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,12 +110,12 @@
         android:gravity="center_vertical">
 
         <TextView
+            android:id="@+id/w_mark_lbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="最近"
-            android:textColor="@color/jade"
-            android:textSize="13sp"
-            android:textStyle="bold"
+            android:textColor="@color/w_label_light"
+            android:textSize="11sp"
             android:singleLine="true"
             android:fontFamily="serif" />
 
@@ -100,24 +124,33 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:text="—"
-            android:textColor="@color/ink2"
+            android:layout_marginLeft="6dp"
+            android:text="元旦"
+            android:textColor="@color/w_mark_light"
             android:textSize="12sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
 
         <TextView
-            android:id="@+id/w_mark_days"
+            android:id="@+id/w_days_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="—"
-            android:textColor="@color/jade"
-            android:textSize="16sp"
+            android:layout_marginLeft="8dp"
+            android:text="47"
+            android:textColor="@color/w_days_light"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:singleLine="true"
+            android:fontFamily="serif" />
+
+        <TextView
+            android:id="@+id/w_days_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:text="天"
+            android:textColor="@color/w_sub_light"
+            android:textSize="11sp"
             android:fontFamily="serif" />
     </LinearLayout>
 
