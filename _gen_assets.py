@@ -87,7 +87,7 @@ for p in [r'C:\Windows\Fonts\msyh.ttc', r'C:\Windows\Fonts\simsun.ttc', r'C:\Win
         break
 
 def preview(path, W, H, compact):
-    # 系统小组件选择器缩略图：还原原生 widget 新版面（品牌 + 黛青短横 + 涟漪角标）
+    # 系统小组件选择器缩略图：还原原生 widget 版面（品牌 + 黛青短横 + 三行）
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     d.rounded_rectangle([6, 6, W - 6, H - 6], radius=24,
@@ -115,11 +115,6 @@ def preview(path, W, H, compact):
     by = line_y + 14
     d.text((16, by), '最近 · 元旦', font=f_mark, fill=INK2 + (255,))
     d.text((W - 58, by - 2), '47 天', font=f_mark, fill=JADE + (255,))
-    # 右下角涟漪（同心椭圆描边）
-    cx, cy = W - 28, H - 24
-    for r in (20, 13):
-        ox = int(r * (0.82 if compact else 0.86))
-        d.ellipse([cx - ox, cy - r, cx + ox, cy + r], outline=JADE + (int(255 * 0.5),), width=2)
     im.save(path)
 
 
