@@ -56,8 +56,8 @@ public class ChangheWidget extends AppWidgetProvider {
     private static void updateOne(Context context, AppWidgetManager manager, int id, int layout) {
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
         String[] t = ChangheData.texts(context);
-        views.setTextViewText(R.id.w_lived, t[0]);
-        views.setTextViewText(R.id.w_ahead, t[1]);
+        views.setTextViewText(R.id.w_lived_val, t[0]);
+        views.setTextViewText(R.id.w_ahead_val, t[1]);
         views.setTextViewText(R.id.w_mark_name, t[2]);
         views.setTextViewText(R.id.w_mark_days, t[3]);
 

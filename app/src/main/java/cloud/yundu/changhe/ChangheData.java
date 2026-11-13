@@ -73,13 +73,12 @@ public final class ChangheData {
         return s;
     }
 
-    /** 四段文本，顺序与 widget 布局中的控件一一对应：已在此间 / 前方尚有 / 最近名称 / 最近天数。 */
+    /**
+     * 四段数值文本，顺序与 widget 布局中的数值控件一一对应：
+     * [0] 已在此间数值 / [1] 前方尚有数值 / [2] 最近事项名称 / [3] 最近事项天数。
+     * 标签（已在此间 / 前方尚有 / 最近）为固定文案，写在布局 XML 里并加粗着色强调。
+     */
     public static String[] texts(Context context) {
-        return texts(context, false);
-    }
-
-    /** compact=true 时只取「年数」，用于 2×2 小尺寸，避免内容撑爆单元格而底部被裁掉。 */
-    public static String[] texts(Context context, boolean compact) {
         Snapshot s = load(context);
         LocalDate today = LocalDate.now();
         LocalDate end = safePlusYears(s.birth, s.horizon);
@@ -87,27 +86,27 @@ public final class ChangheData {
         Period lived = betweenNonNegative(s.birth, today);
         Period ahead = betweenNonNegative(today, end);
 
-        String livedText = "已在此间 " + (compact ? yearsOnly(lived) : durSentence(lived));
-        String aheadText;
+        String livedVal = durSentence(lived);
+        String aheadVal;
         if (!today.isBefore(end)) {
-            aheadText = "前方尚有 · 且看此刻";
+            aheadVal = "且看此刻";
         } else {
-            aheadText = "前方尚有 " + (compact ? yearsOnly(ahead) : durSentence(ahead));
+            aheadVal = durSentence(ahead);
         }
 
-        String markName = "最近 · 打开光阴长河同步一次";
+        String markName = "未设置";
         String markDays = "—";
         if (s.synced) {
             for (Mark m : s.marks) {
                 if (m.date.isBefore(today)) continue;
                 long d = ChronoUnit.DAYS.between(today, m.date);
-                markName = "最近 · " + m.name;
+                markName = m.name;
                 markDays = (d == 0) ? "就在今日" : d + " 天";
                 break;
             }
         }
 
-        return new String[]{livedText, aheadText, markName, markDays};
+        return new String[]{livedVal, aheadVal, markName, markDays};
     }
 
     /** 把一段时间写成「X 年零 X 个月 X 天」（零仅在有剩余时出现，零值段省略）。 */
@@ -120,11 +119,6 @@ public final class ChangheData {
             if (p.getDays() > 0) sb.append(p.getDays()).append(" 天");
         }
         return sb.toString().trim();
-    }
-
-    /** 只保留年数，如「24 年」，给 2×2 小部件用。 */
-    private static String yearsOnly(Period p) {
-        return p.getYears() + " 年";
     }
 
     private static int clampHorizon(int h) {

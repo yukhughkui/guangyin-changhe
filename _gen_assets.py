@@ -73,9 +73,9 @@ for folder, size in [('mipmap-mdpi', 48), ('mipmap-hdpi', 72),
     print('icon', folder, size)
 
 
-def font(path, size):
+def font(path, size, index=0):
     try:
-        return ImageFont.truetype(path, size)
+        return ImageFont.truetype(path, size, index=index)
     except Exception:
         return None
 
@@ -87,7 +87,8 @@ for p in [r'C:\Windows\Fonts\msyh.ttc', r'C:\Windows\Fonts\simsun.ttc', r'C:\Win
         break
 
 def preview(path, W, H, compact):
-    # 系统小组件选择器缩略图：还原原生 widget 版面（品牌 + 黛青短横 + 三行）
+    # 系统小组件选择器缩略图：与原生 widget 实际渲染对齐
+    # —— 标签（已在此间/前方尚有/最近）jade 加粗为视觉重点，数值墨色退为次一级
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     d.rounded_rectangle([6, 6, W - 6, H - 6], radius=24,
@@ -96,25 +97,28 @@ def preview(path, W, H, compact):
     if not F:
         d.line([(26, H // 2), (W - 26, H // 2)], fill=(228, 235, 231, 255), width=2)
         im.save(path); return
-    f_brand = font(r'C:\Windows\Fonts\msyh.ttc', 12 if compact else 13) or F
-    sz = 13 if compact else 15
-    f_line = font(r'C:\Windows\Fonts\msyh.ttc', sz) or F
-    f_mark = font(r'C:\Windows\Fonts\msyh.ttc', 13 if compact else 14) or F
-    # 品牌 + 黛青短横
-    d.text((16, 16), '光阴长河', font=f_brand, fill=INK3 + (255,))
-    ly = 34 if compact else 35
-    d.line([(16, ly), (16 + (22 if compact else 26), ly)], fill=JADE + (255,), width=2)
-    lived = '已在此间 24 年 零 4 个月 30 天'
-    ahead = '前方尚有 55 年 零 7 个月 1 天'
-    y1 = 54 if compact else 52
-    dy = 44 if compact else 48
-    d.text((16, y1), lived, font=f_line, fill=JADE + (255,))
-    d.text((16, y1 + dy), ahead, font=f_line, fill=INK2 + (255,))
-    line_y = y1 + dy * 2 + 10
-    d.line([(16, line_y), (W - 16, line_y)], fill=(228, 235, 231, 255), width=2)
-    by = line_y + 14
-    d.text((16, by), '最近 · 元旦', font=f_mark, fill=INK2 + (255,))
-    d.text((W - 58, by - 2), '47 天', font=f_mark, fill=JADE + (255,))
+    sz = 12 if compact else 14
+    fb_label = font(r'C:\Windows\Fonts\msyh.ttc', sz, index=1) or font(r'C:\Windows\Fonts\msyh.ttc', sz) or F
+    f_val = font(r'C:\Windows\Fonts\msyh.ttc', sz) or F
+    f_mark = font(r'C:\Windows\Fonts\msyh.ttc', 12 if compact else 13) or F
+    x = 16
+    y0 = 20 if compact else 18
+    lh = 24 if compact else 28
+
+    def row(yy, lab, val):
+        d.text((x, yy), lab, font=fb_label, fill=JADE + (255,))
+        lw = d.textlength(lab, font=fb_label)
+        d.text((x + lw + 8, yy), val, font=f_val, fill=INK2 + (255,))
+
+    row(y0, '已在此间', '24 年 零 4 个月 30 天')
+    row(y0 + lh, '前方尚有', '55 年 零 7 个月 1 天')
+    line_y = y0 + lh * 2 + 12
+    d.line([(x, line_y), (W - 16, line_y)], fill=(228, 235, 231, 255), width=2)
+    by = line_y + 12
+    d.text((x, by), '最近', font=fb_label, fill=JADE + (255,))
+    nlw = d.textlength('最近', font=fb_label)
+    d.text((x + nlw + 8, by), '元旦', font=f_mark, fill=INK2 + (255,))
+    d.text((W - 56, by - 1), '47 天', font=f_mark, fill=JADE + (255,))
     im.save(path)
 
 
