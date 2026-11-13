@@ -126,7 +126,7 @@ html[data-theme="night"] .hero-water i{background:linear-gradient(90deg,rgba(94,
 .ahead .zero{font-family:var(--serif);font-size:18px;color:var(--ink-2);margin:0 5px;font-weight:400}
 .progress-row{margin-top:20px;display:flex;flex-direction:column;gap:13px}
 .prog{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--ink-2)}
-.prog>span:first-child{width:36px;flex:none;color:var(--ink-3);letter-spacing:.08em}
+.prog>span:first-child{width:54px;flex:none;white-space:nowrap;color:var(--ink-3);letter-spacing:.04em}
 .prog .bar{flex:1;height:3px;background:var(--surface-3);border-radius:99px;overflow:hidden}
 .prog .bar i{display:block;height:100%;background:var(--jade-2);border-radius:99px;transition:width .6s ease}
 .prog>em{font-style:normal;width:46px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
@@ -193,30 +193,32 @@ html[data-theme="night"] .hero-water i{background:linear-gradient(90deg,rgba(94,
 html[data-theme="night"] .desktop{background:#0A1210;border:1px solid var(--line)}
 .desktop-cap{font-size:10px;letter-spacing:.18em;color:var(--ink-3);margin-bottom:12px}
 .wdemo-wrap{display:flex;align-items:stretch;gap:14px;margin-bottom:12px}
-.wdemo{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:0 5px 18px rgba(20,40,34,.07);display:flex;flex-direction:column;justify-content:space-between}
+.wdemo{background:var(--surface);border:1px solid var(--line);border-radius:14px;position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(20,40,34,.08);padding:12px 14px;display:flex;flex-direction:column}
 .wdemo-sm{width:54%;aspect-ratio:1}
 .wdemo-wide{width:100%;aspect-ratio:2.06/1;margin-top:6px}
 .wdemo-note{flex:1;display:flex;flex-direction:column;justify-content:center;font-size:11px;color:var(--ink-3);line-height:2;letter-spacing:.04em}
 .wdemo-note b{font-family:var(--mono);color:var(--jade);font-weight:500}
-.wd-top{display:flex;justify-content:space-between;align-items:baseline}
-.wd-k{font-family:var(--serif);font-size:10px;letter-spacing:.12em;color:var(--ink-3)}
-.wd-ahead{font-family:var(--serif);font-size:10px;color:var(--ink-2);white-space:nowrap}
-.wdemo-wide .wd-ahead{font-size:11px}
-.wd-big{display:flex;align-items:baseline;gap:4px;margin-top:2px}
-.wd-num{font-family:var(--serif);color:var(--jade);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
-.wdemo-wide .wd-num{font-size:36px}
-.wd-unit{font-family:var(--serif);color:var(--jade-2);font-size:12px;margin-bottom:3px}
-.wd-rest{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-2);text-align:right;letter-spacing:.02em;white-space:nowrap}
-.wdemo-wide .wd-rest{font-size:11px}
-.wd-l1{font-family:var(--serif);font-size:12px;color:var(--jade);line-height:1.5;margin-top:4px;letter-spacing:.02em}
-.wd-l2{font-family:var(--serif);font-size:12px;color:var(--ink-2);line-height:1.5;margin-top:7px;letter-spacing:.02em}
-.wdemo-wide .wd-l1,.wdemo-wide .wd-l2{font-size:14px}
+.wd-top2{display:flex;justify-content:space-between;align-items:flex-start}
+.wd-cap{font-family:var(--serif);font-size:10px;letter-spacing:.22em;color:var(--jade-2)}
+.wd-seal{writing-mode:vertical-rl;font-family:var(--serif);font-size:11px;letter-spacing:.34em;color:var(--jade);opacity:.45;line-height:1}
+.wd-main{display:flex;align-items:baseline;gap:3px;margin-top:5px}
+.wd-num{font-family:var(--serif);color:var(--jade);font-size:34px;line-height:.86;font-variant-numeric:tabular-nums}
+.wdemo-wide .wd-num{font-size:44px}
+.wd-unit{font-family:var(--serif);color:var(--jade-2);font-size:13px;margin-bottom:5px}
+.wd-rest{margin-left:auto;align-self:flex-end;font-family:var(--serif);font-size:11px;color:var(--ink-2);text-align:right;line-height:1.5;max-width:54%}
+.wdemo-wide .wd-rest{font-size:12px}
+.wd-ahead{font-family:var(--serif);font-size:12px;color:var(--ink-2);margin-top:5px;letter-spacing:.02em}
+.wdemo-wide .wd-ahead{font-size:14px}
 .wd-line{height:1px;background:var(--line);margin:9px 0 8px}
 .wd-bot{display:flex;justify-content:space-between;align-items:baseline}
 .wd-mark{font-family:var(--serif);font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wdemo-wide .wd-mark{font-size:12px}
 .wd-days{font-family:var(--serif);font-size:14px;color:var(--jade);white-space:nowrap}
 .wdemo-wide .wd-days{font-size:17px}
+.wd-wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:16px;pointer-events:none;opacity:.55}
+.wd-wave path{stroke:var(--jade-2);fill:none;stroke-width:1.1;stroke-linecap:round}
+.field.tap{cursor:pointer}
+.field-val{font-family:var(--mono);font-size:13px;color:var(--jade);text-align:right;white-space:nowrap}
 .info-box{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:15px 17px;margin-top:18px}
 .info-box h4{font-family:var(--serif);font-size:14px;letter-spacing:.1em;margin:0 0 9px}
 .info-box p{font-size:12px;color:var(--ink-2);line-height:2;margin:0 0 8px}
@@ -390,19 +392,23 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
         <div class="desktop-cap">小尺寸 · 2 × 2</div>
         <div class="wdemo-wrap">
           <div class="wdemo wdemo-sm">
-            <div class="wd-l1" id="wSmL1">已在此间 —</div>
-            <div class="wd-l2" id="wSmL2">前方尚有 —</div>
+            <div class="wd-top2"><span class="wd-cap">已在此间</span><span class="wd-seal">光阴</span></div>
+            <div class="wd-main"><span class="wd-num" id="wSmYear">—</span><span class="wd-unit">年</span><span class="wd-rest" id="wSmRest"></span></div>
+            <div class="wd-ahead" id="wSmL2">前方尚有 —</div>
             <div class="wd-line"></div>
             <div class="wd-bot"><span class="wd-mark" id="wSmMark">最近 · —</span><span class="wd-days" id="wSmDays">—</span></div>
+            <svg class="wd-wave" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0 11 Q14 5 28 11 T56 11 T84 11 T100 11"/><path d="M0 14 Q20 9 40 14 T80 14 T100 14" opacity=".6"/></svg>
           </div>
           <div class="wdemo-note">2 × 2<br>桌面占两格<br>正方形</div>
         </div>
         <div class="desktop-cap" style="margin-top:18px">中尺寸 · 4 × 2</div>
           <div class="wdemo wdemo-wide">
-            <div class="wd-l1" id="wWideL1">已在此间 —</div>
-            <div class="wd-l2" id="wWideL2">前方尚有 —</div>
+            <div class="wd-top2"><span class="wd-cap">已在此间</span><span class="wd-seal">光阴</span></div>
+            <div class="wd-main"><span class="wd-num" id="wWideYear">—</span><span class="wd-unit">年</span><span class="wd-rest" id="wWideRest"></span></div>
+            <div class="wd-ahead" id="wWideL2">前方尚有 —</div>
             <div class="wd-line"></div>
             <div class="wd-bot"><span class="wd-mark" id="wWideMark">最近 · —</span><span class="wd-days" id="wWideDays">—</span></div>
+            <svg class="wd-wave" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0 11 Q14 5 28 11 T56 11 T84 11 T100 11"/><path d="M0 14 Q20 9 40 14 T80 14 T100 14" opacity=".6"/></svg>
           </div>
       </div>
 
@@ -413,7 +419,6 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
       <div class="info-box">
         <h4>两种尺寸</h4>
         <p>小 · 2 × 2　　宽 · 4 × 2</p>
-        <p>Android · AppWidget　　iOS · WidgetKit</p>
       </div>
       <div class="info-box">
         <h4>只放三件事</h4>
@@ -435,13 +440,13 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
           <div><label>出生日期</label></div>
           <input type="date" id="setBirth">
         </div>
-        <div class="field">
+        <div class="field tap" id="fHorizon">
           <div><label>想走到的年岁</label></div>
-          <input type="number" id="setHorizon" min="1" max="130" step="1">
+          <div class="field-val" id="setHorizonVal">80 岁 ›</div>
         </div>
-        <div class="field">
+        <div class="field tap" id="fAges">
           <div><label>关注的年岁</label></div>
-          <input type="text" id="setAges" placeholder="30,40,50,60">
+          <div class="field-val" id="setAgesVal">30 · 40 · 50 · 60 ›</div>
         </div>
         <div class="field">
           <div><label>显示秒</label></div>
@@ -494,6 +499,34 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
     </div>
   </div>
 </div>
+<!-- 想走到的年岁 -->
+<div class="sheet-bg" id="numSheetBg">
+  <div class="sheet">
+    <h3>想走到的年岁</h3>
+    <div class="field"><div><label>岁数</label><small>按出生日期推算，你打算走到多少岁</small></div>
+      <input type="number" id="numInput" min="1" max="130" step="1" placeholder="例如 80"></div>
+    <div class="sheet-actions">
+      <button id="numCancel">取消</button>
+      <button class="primary" id="numOk">确定</button>
+    </div>
+  </div>
+</div>
+<!-- 关注的年岁 -->
+<div class="sheet-bg" id="agesSheetBg">
+  <div class="sheet">
+    <h3>关注的年岁</h3>
+    <p class="lede" style="margin:0 0 14px">想让哪些年岁出现在刻度上，逐个添加；点 × 可移除。</p>
+    <div id="agesList"></div>
+    <div class="field" style="border-top:none;padding-top:4px">
+      <div><label>添加一个</label></div>
+      <input type="number" id="ageInput" min="1" max="130" step="1" placeholder="例如 27">
+    </div>
+    <div class="sheet-actions">
+      <button id="ageAdd">添加</button>
+      <button class="primary" id="agesDone">完成</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -507,7 +540,6 @@ var DEFAULT = {
   birth: "2002-06-15",
   horizon: 80,
   ages: [30,40,50,60],
-  customAges: [],
   showSeconds: true,
   night: false,
   customized: false,
@@ -634,6 +666,12 @@ function load(){
     if(!raw) return JSON.parse(JSON.stringify(DEFAULT));
     var o = JSON.parse(raw), d = JSON.parse(JSON.stringify(DEFAULT));
     for(var k in d) if(Object.prototype.hasOwnProperty.call(o,k)) d[k]=o[k];
+    if(o.customAges){
+      for(var ci=0;ci<o.customAges.length;ci++){
+        if(d.ages.indexOf(o.customAges[ci].age)<0) d.ages.push(o.customAges[ci].age);
+      }
+      d.ages.sort(function(a,b){return a-b;});
+    }
     if(!o.v || o.v < 2){
       var add = [["结婚","2032-05-20"],["生子","2034-08-08"]], a, q, exists;
       for(a=0;a<add.length;a++){
@@ -785,13 +823,7 @@ function buildAges(){
   for(i=0;i<S.ages.length;i++){
     n = +S.ages[i];
     if(!n || n<1 || n>130) continue;
-    a.push({name:"距 "+n+" 岁",date:at(n),guess:false});
-  }
-  var custom = S.customAges || [];
-  for(i=0;i<custom.length;i++){
-    n = +custom[i].age;
-    if(!n || n<1 || n>130 || S.ages.indexOf(n)>=0) continue;
-    a.push({id:custom[i].id,name:"距 "+n+" 岁",date:at(n),guess:false,custom:true});
+    a.push({id:"age"+n, name:"距 "+n+" 岁",date:at(n),guess:false});
   }
   return a;
 }
@@ -1122,7 +1154,7 @@ function render(){
   var ages = buildAges();
   ages.sort(function(a,c){ return a.date-c.date; });
   renderGroup("age","ageList","foldAge",ages,function(e,ed){
-    return e.custom ? {deletable:true,editing:ed,mode:"age",editLabel:"改岁数 ›"} : {};
+    return {deletable:true,editing:ed,mode:"age",editLabel:"改岁数 ›"};
   });
 
   var fes = buildFestivals(now);
@@ -1148,8 +1180,8 @@ function render(){
 
   /* 设置 */
   $("setBirth").value = S.birth;
-  $("setHorizon").value = S.horizon;
-  $("setAges").value = S.ages.join(",");
+  $("setHorizonVal").textContent = S.horizon + " 岁 ›";
+  $("setAgesVal").textContent = S.ages.join(" · ") + " ›";
   $("setSeconds").classList.toggle("on", !!S.showSeconds);
   $("setNight").classList.toggle("on", !!S.night);
   $("notice").style.display = S.customized ? "none" : "flex";
@@ -1233,12 +1265,14 @@ function fillDemo(){
     markDays = (days===0 ? "就在今日" : days+" 天");
   }
   function durZh(p){ var s=p.y+" 年"; if(p.mo>0||p.d>0){ s+=" 零 "; if(p.mo) s+=p.mo+" 个月 "; if(p.d) s+=p.d+" 天"; } return s; }
-  var livedSent = "已在此间 "+durZh(lived);
-  var aheadSent = !ahead ? "前方尚有 · 且看此刻" : "前方尚有 "+durZh(ahead);
-  $("wSmL1").textContent=livedSent;   $("wWideL1").textContent=livedSent;
-  $("wSmL2").textContent=aheadSent;   $("wWideL2").textContent=aheadSent;
-  $("wSmMark").textContent=markName;  $("wWideMark").textContent=markName;
-  $("wSmDays").textContent=markDays;  $("wWideDays").textContent=markDays;
+  var livedRest = "";
+  if(lived.mo>0 || lived.d>0){ livedRest = "零 "; if(lived.mo) livedRest += lived.mo+" 个月 "; if(lived.d) livedRest += lived.d+" 天"; }
+  var aheadSent = !ahead ? "前方尚有 · 且看此刻" : ("前方尚有 "+durZh(ahead));
+  $("wSmYear").textContent=lived.y;          $("wWideYear").textContent=lived.y;
+  $("wSmRest").textContent=livedRest;         $("wWideRest").textContent=livedRest;
+  $("wSmL2").textContent=aheadSent;           $("wWideL2").textContent=aheadSent;
+  $("wSmMark").textContent=markName;          $("wWideMark").textContent=markName;
+  $("wSmDays").textContent=markDays;          $("wWideDays").textContent=markDays;
 }
 
 function tick(){
@@ -1265,10 +1299,11 @@ function openSheet(id, mode){
   sheetMode = mode || "event";
   sheetEditId = id || null;
   var isAge = sheetMode==="age";
-  var list = isAge ? (S.customAges||[]) : (sheetMode==="memorial" ? S.memorials : S.events);
+  var list = isAge ? S.ages : (sheetMode==="memorial" ? S.memorials : S.events);
   var item = null, i;
   if(sheetEditId){
-    for(i=0;i<list.length;i++) if(list[i].id===sheetEditId) item=list[i];
+    if(isAge) item = (+sheetEditId.replace("age","")||null);
+    else for(i=0;i<list.length;i++) if(list[i].id===sheetEditId) item=list[i];
   }
   $("sheetTitle").textContent = isAge
     ? (item ? "改一改岁数" : "添加一个年岁")
@@ -1350,14 +1385,49 @@ $("setBirth").addEventListener("change",function(){
   }
   save(); render(); toast("出生日期已记下");
 });
-$("setHorizon").addEventListener("change",function(){
-  var v=Math.max(1,Math.min(130,parseInt(this.value,10)||80));
-  S.horizon=v; S.customized=true; save(); render();
+/* 想走到的年岁：点击弹出数字框 + 确定 */
+$("fHorizon").addEventListener("click",function(){
+  $("numInput").value = S.horizon;
+  $("numSheetBg").classList.add("show");
+  setTimeout(function(){ try{ $("numInput").focus(); }catch(e){} }, 200);
 });
-$("setAges").addEventListener("change",function(){
-  var arr=this.value.split(/[,，\s]+/).map(function(x){ return parseInt(x,10); }).filter(function(x){ return x>0&&x<=130; });
-  S.ages=arr.slice(0,10); S.customized=true; save(); render();
+$("numCancel").addEventListener("click",function(){ $("numSheetBg").classList.remove("show"); });
+$("numSheetBg").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });
+$("numOk").addEventListener("click",function(){
+  var v=Math.max(1,Math.min(130,parseInt($("numInput").value,10)||80));
+  S.horizon=v; S.customized=true; save();
+  $("numSheetBg").classList.remove("show");
+  render(); toast("已记到 "+v+" 岁");
 });
+/* 关注的年岁：点击弹出管理页，可添加 / 移除 / 完成 */
+$("fAges").addEventListener("click",function(){ renderAgesSheet(); $("agesSheetBg").classList.add("show"); });
+$("agesSheetBg").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });
+$("agesDone").addEventListener("click",function(){ $("agesSheetBg").classList.remove("show"); });
+$("ageAdd").addEventListener("click",function(){
+  var v=parseInt($("ageInput").value,10);
+  if(!v||v<1||v>130){ toast("写 1 到 130 之间的岁数"); return; }
+  if(S.ages.indexOf(v)>=0){ toast("这个岁数已经在刻度里"); return; }
+  S.ages.push(v); S.ages.sort(function(a,b){return a-b;});
+  S.customized=true; save(); render(); renderAgesSheet(); $("ageInput").value="";
+});
+function renderAgesSheet(){
+  var box=$("agesList"), h="";
+  if(!S.ages.length){ h='<p class="empty">还没有关注的年岁。</p>'; }
+  else{
+    S.ages.forEach(function(a){
+      h+='<div class="field" style="padding:10px 0"><div><label>距 '+a+' 岁</label></div>'+
+         '<button data-del="age'+a+'" style="width:22px;height:22px;border-radius:50%;background:var(--surface-3);color:var(--ink-2);font-size:14px;line-height:20px">×</button></div>';
+    });
+  }
+  box.innerHTML=h;
+  box.querySelectorAll("[data-del]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var num=parseInt(btn.getAttribute("data-del").replace("age",""),10);
+      S.ages=S.ages.filter(function(x){return x!==num;});
+      S.customized=true; save(); render(); renderAgesSheet();
+    });
+  });
+}
 $("setSeconds").addEventListener("click",function(){ S.showSeconds=!S.showSeconds; save(); render(); });
 $("setNight").addEventListener("click",function(){ S.night=!S.night; save(); render(); });
 $("resetBtn").addEventListener("click",function(){
@@ -1378,16 +1448,13 @@ $("evSave").addEventListener("click",function(){
   if(sheetMode==="age"){
     age = parseInt(n,10);
     if(!age || age<1 || age>130){ toast("写 1 到 130 之间的岁数"); return; }
-    if(S.ages.indexOf(age)>=0){ toast("这个岁数已经在默认刻度里"); return; }
-    list = S.customAges || (S.customAges=[]);
-    dup = false;
-    for(i=0;i<list.length;i++) if(list[i].age===age && list[i].id!==sheetEditId) dup=true;
-    if(dup){ toast("这个岁数已经添过了"); return; }
     if(sheetEditId){
-      for(i=0;i<list.length;i++) if(list[i].id===sheetEditId){ list[i].age=age; break; }
-    }else{
-      list.push({id:"a"+Date.now(), age:age});
+      var oldAge = parseInt(sheetEditId.replace("age",""),10);
+      var oi = S.ages.indexOf(oldAge);
+      if(oi>=0) S.ages.splice(oi,1);
     }
+    if(S.ages.indexOf(age)>=0){ toast("这个岁数已经在刻度里"); S.customized=true; save(); $("sheetBg").classList.remove("show"); render(); return; }
+    S.ages.push(age); S.ages.sort(function(a,b){return a-b;});
     S.customized=true; save();
     $("sheetBg").classList.remove("show");
     render();
@@ -1413,7 +1480,7 @@ function requestWidget(size){
     window.ChangheBridge.requestWidget(size);
     note.textContent = "已交给系统，确认即可落到桌面";
   }else{
-    note.textContent = "当前是预览页面：请在手机桌面长按空白处，从「小组件」里选择「岁月长河」";
+    note.textContent = "当前是预览页面：请在手机桌面长按空白处，从「小组件」里选择「光阴长河」";
   }
 }
 $("addWSmall").addEventListener("click",function(){ requestWidget("small"); });
@@ -1421,7 +1488,14 @@ $("addWWide").addEventListener("click",function(){ requestWidget("wide"); });
 
 bindDelete($("eventList"),"events");
 bindDelete($("memorialList"),"memorials");
-bindDelete($("ageList"),"customAges");
+$("ageList").addEventListener("click", function(e){
+  var id = e.target.getAttribute && e.target.getAttribute("data-del");
+  if(!id) return;
+  e.stopPropagation();
+  var num = parseInt(id.replace("age",""),10);
+  S.ages = S.ages.filter(function(x){ return x!==num; });
+  S.customized=true; save(); render(); toast("已移除");
+});
 
 /* ---------- 页内日期滚轮：替代系统日期选择框，定位统一 ---------- */
 var dpState = {y:2002, m:6, d:15, _my:0};
