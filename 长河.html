@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="岁月长河">
+<meta name="apple-mobile-web-app-title" content="光阴长河">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23F4F5F1'/%3E%3Cpath d='M18 108 Q45 96 72 108 T126 108 T162 108' fill='none' stroke='%233C6A60' stroke-width='3'/%3E%3Cpath d='M18 124 Q45 112 72 124 T126 124 T162 124' fill='none' stroke='%237FA79E' stroke-width='2' opacity='.6'/%3E%3Ccircle cx='90' cy='70' r='4' fill='%233C6A60'/%3E%3Cpath d='M90 66 C74 40 52 40 40 48 C56 56 72 62 90 70 C108 62 124 56 140 48 C128 40 106 40 90 66Z' fill='none' stroke='%233C6A60' stroke-width='2'/%3E%3C/svg%3E">
-<title>岁月长河 · 人生倒计时</title>
+<title>光阴长河 · 人生倒计时</title>
 <style>
 :root{
   --bg:#F4F5F1; --surface:#FCFCFA; --surface-2:#EDF1EE; --surface-3:#E4EBE7;
@@ -206,9 +206,11 @@ html[data-theme="night"] .desktop{background:#0A1210;border:1px solid var(--line
 .wd-num{font-family:var(--serif);color:var(--jade);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
 .wdemo-wide .wd-num{font-size:36px}
 .wd-unit{font-family:var(--serif);color:var(--jade-2);font-size:12px;margin-bottom:3px}
-.wdemo-sm .wd-rest{display:none}
 .wd-rest{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-2);text-align:right;letter-spacing:.02em;white-space:nowrap}
 .wdemo-wide .wd-rest{font-size:11px}
+.wd-l1{font-family:var(--serif);font-size:12px;color:var(--jade);line-height:1.5;margin-top:4px;letter-spacing:.02em}
+.wd-l2{font-family:var(--serif);font-size:12px;color:var(--ink-2);line-height:1.5;margin-top:7px;letter-spacing:.02em}
+.wdemo-wide .wd-l1,.wdemo-wide .wd-l2{font-size:14px}
 .wd-line{height:1px;background:var(--line);margin:9px 0 8px}
 .wd-bot{display:flex;justify-content:space-between;align-items:baseline}
 .wd-mark{font-family:var(--serif);font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -286,7 +288,7 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
         <path d="M4 33 Q12 29 20 33 T36 33" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".35"/>
         <circle cx="20" cy="21" r="1.7" fill="currentColor"/>
       </svg>
-      <b>岁月长河</b><em>人生倒计时</em>
+      <b>光阴长河</b><em>人生倒计时</em>
     </div>
     <button class="ghost-btn" id="themeBtn">夜</button>
   </header>
@@ -309,7 +311,7 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
           </div>
           <div class="hero-side">
             <div class="hero-from" id="heroFrom">—</div>
-            <div class="hero-seal">逝者如斯</div>
+            <div class="hero-seal">光阴长河</div>
             <div class="hero-pct">已流过 <b id="heroPct">—</b></div>
           </div>
         </div>
@@ -388,20 +390,20 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
         <div class="desktop-cap">小尺寸 · 2 × 2</div>
         <div class="wdemo-wrap">
           <div class="wdemo wdemo-sm">
-            <div class="wd-top"><span class="wd-k">已在此间</span><span class="wd-ahead" id="wSmAhead">前方尚有 —</span></div>
-            <div class="wd-big"><span class="wd-num" id="wSmNum">—</span><span class="wd-unit">个年头</span></div>
+            <div class="wd-l1" id="wSmL1">已在此间 —</div>
+            <div class="wd-l2" id="wSmL2">前方尚有 —</div>
             <div class="wd-line"></div>
             <div class="wd-bot"><span class="wd-mark" id="wSmMark">最近 · —</span><span class="wd-days" id="wSmDays">—</span></div>
           </div>
           <div class="wdemo-note">2 × 2<br>桌面占两格<br>正方形</div>
         </div>
         <div class="desktop-cap" style="margin-top:18px">中尺寸 · 4 × 2</div>
-        <div class="wdemo wdemo-wide">
-          <div class="wd-top"><span class="wd-k">已在此间</span><span class="wd-ahead" id="wWideAhead">前方尚有 —</span></div>
-          <div class="wd-big"><span class="wd-num" id="wWideNum">—</span><span class="wd-unit">个年头</span><span class="wd-rest" id="wWideRest">—</span></div>
-          <div class="wd-line"></div>
-          <div class="wd-bot"><span class="wd-mark" id="wWideMark">最近 · —</span><span class="wd-days" id="wWideDays">—</span></div>
-        </div>
+          <div class="wdemo wdemo-wide">
+            <div class="wd-l1" id="wWideL1">已在此间 —</div>
+            <div class="wd-l2" id="wWideL2">前方尚有 —</div>
+            <div class="wd-line"></div>
+            <div class="wd-bot"><span class="wd-mark" id="wWideMark">最近 · —</span><span class="wd-days" id="wWideDays">—</span></div>
+          </div>
       </div>
 
       <div class="info-box">
@@ -454,7 +456,7 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
       <div class="section-rule"></div>
       <div class="about">
         <p>我们在这个世界上的时间有限，但很多事物都想要夺走你有限生命里的有限时间。</p>
-        <p>岁月长河这款软件不做什么，它只把你的时间还原成看得见的数字：已经流过的、还在前方的，以及你为自己设下的。</p>
+        <p>光阴长河这款软件不做什么，它只把你的时间还原成看得见的数字：已经流过的、还在前方的，以及你为自己设下的。</p>
         <p>看见它，是为了把时间还给自己。</p>
         <p>少向外追一个答案，多向内问自己的本心。</p>
         <p>春秋蝉可逆流而上，我们虽回不去过往，但可留住当下的寻常。</p>
@@ -531,6 +533,8 @@ var nearestName = "";
 var dayKey = "";
 var quoteIdx = 0;
 var verseIdx = 21;
+function _qseed(k, d){ try{ var x=localStorage.getItem("ch_q_"+k); return x===null?d:(parseInt(x,10)||0); }catch(e){ return d; } }
+function _qsave(k, v){ try{ localStorage.setItem("ch_q_"+k, v); }catch(e){} }
 var expanded = {event:false, age:false, festival:false, memorial:false};
 var sheetMode = "event";
 var sheetEditId = null;
@@ -608,16 +612,20 @@ var QUOTES = [
   {t:"白发渔樵江渚上，惯看秋月春风。", f:"杨慎《廿一史弹词》"},
   {t:"谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳。", f:"纳兰性德《浣溪沙》"}
 ];
+quoteIdx = _qseed("q", Math.floor(Date.now()/1000) % QUOTES.length);
+verseIdx = _qseed("v", (Math.floor(Date.now()/1000)+21) % QUOTES.length);
 function showQuote(){
   var q = QUOTES[quoteIdx % QUOTES.length];
   $("quoteText").textContent = q.t;
   $("quoteFrom").textContent = "—— " + q.f;
   $("quoteNo").textContent = pad(quoteIdx+1)+" / "+pad(QUOTES.length);
+  _qsave("q", quoteIdx);
 }
 function showVerse(){
   var q = QUOTES[verseIdx % QUOTES.length];
   $("verseText").textContent = q.t;
   $("verseFrom").textContent = "—— " + q.f;
+  _qsave("v", verseIdx);
 }
 
 function load(){
@@ -1093,9 +1101,9 @@ function render(){
   var mStart = new Date(now.getFullYear(),now.getMonth(),1), mEnd = new Date(now.getFullYear(),now.getMonth()+1,1);
   var dStart = new Date(now.getFullYear(),now.getMonth(),now.getDate()), dEnd = new Date(dStart.getTime()+86400000);
   var rows = [
-    ["今年",(now-yStart)/(yEnd-yStart)],
-    ["本月",(now-mStart)/(mEnd-mStart)],
-    ["今日",(now-dStart)/(dEnd-dStart)]
+    ["今年已过",(now-yStart)/(yEnd-yStart)],
+    ["本月已过",(now-mStart)/(mEnd-mStart)],
+    ["今日已过",(now-dStart)/(dEnd-dStart)]
   ];
   var ph = "";
   for(var i=0;i<rows.length;i++){
@@ -1223,11 +1231,13 @@ function fillDemo(){
     var days=Math.max(0,Math.floor((nearestTs-now.getTime())/86400000));
     markDays = (days===0 ? "就在今日" : days+" 天");
   }
-  $("wSmAhead").textContent=aheadText; $("wWideAhead").textContent=aheadText;
-  $("wSmNum").textContent=lived.y;      $("wWideNum").textContent=lived.y;
-  var wRest = "零 "; if(lived.mo) wRest += lived.mo+" 个月 "; if(lived.d) wRest += lived.d+" 天"; $("wWideRest").textContent = wRest;
-  $("wSmMark").textContent=markName;    $("wWideMark").textContent=markName;
-  $("wSmDays").textContent=markDays;    $("wWideDays").textContent=markDays;
+  function durZh(p){ var s=p.y+" 年"; if(p.mo>0||p.d>0){ s+=" 零 "; if(p.mo) s+=p.mo+" 个月 "; if(p.d) s+=p.d+" 天"; } return s; }
+  var livedSent = "已在此间 "+durZh(lived);
+  var aheadSent = !ahead ? "前方尚有 · 且看此刻" : "前方尚有 "+durZh(ahead);
+  $("wSmL1").textContent=livedSent;   $("wWideL1").textContent=livedSent;
+  $("wSmL2").textContent=aheadSent;   $("wWideL2").textContent=aheadSent;
+  $("wSmMark").textContent=markName;  $("wWideMark").textContent=markName;
+  $("wSmDays").textContent=markDays;  $("wWideDays").textContent=markDays;
 }
 
 function tick(){
@@ -1480,7 +1490,9 @@ if(["river","marks","widget","self"].indexOf(hash)>=0) go(hash);
 var initDay = new Date();
 dayKey = initDay.getFullYear()+"-"+initDay.getMonth()+"-"+initDay.getDate();
 setInterval(tick, 1000);
-document.addEventListener("visibilitychange",function(){ if(!document.hidden) render(); });
+/* 每日一句轮播：每 12 秒自动轮换；每次从后台回到前台也换一句，保证每次打开都不一样 */
+setInterval(function(){ quoteIdx=(quoteIdx+1)%QUOTES.length; verseIdx=(verseIdx+1)%QUOTES.length; showQuote(); showVerse(); }, 12000);
+document.addEventListener("visibilitychange",function(){ if(!document.hidden){ quoteIdx=(quoteIdx+1)%QUOTES.length; verseIdx=(verseIdx+1)%QUOTES.length; showQuote(); showVerse(); render(); } });
 })();
 </script>
 </body>

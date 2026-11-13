@@ -73,7 +73,7 @@ public final class ChangheData {
         return s;
     }
 
-    /** 五段文本，顺序与 widget_changhe.xml 中的控件一一对应。 */
+    /** 四段文本，顺序与 widget 布局中的控件一一对应：已在此间 / 前方尚有 / 最近名称 / 最近天数。 */
     public static String[] texts(Context context) {
         Snapshot s = load(context);
         LocalDate today = LocalDate.now();
@@ -81,43 +81,40 @@ public final class ChangheData {
 
         Period lived = betweenNonNegative(s.birth, today);
         Period ahead = betweenNonNegative(today, end);
-        long livedDays = Math.max(0, ChronoUnit.DAYS.between(s.birth, today));
 
+        String livedText = "已在此间 " + durSentence(lived);
         String aheadText;
         if (!today.isBefore(end)) {
             aheadText = "前方尚有 · 且看此刻";
-        } else if (ahead.getYears() > 0) {
-            aheadText = "前方尚有 " + ahead.getYears() + " 年";
         } else {
-            aheadText = "前方尚有 " + Math.max(1, ahead.getMonths()) + " 月";
+            aheadText = "前方尚有 " + durSentence(ahead);
         }
 
-        String livedNum = String.valueOf(lived.getYears());
-        StringBuilder livedRest = new StringBuilder();
-        if (lived.getMonths() > 0 || lived.getDays() > 0) {
-            livedRest.append("零 ");
-            if (lived.getMonths() > 0) livedRest.append(lived.getMonths()).append(" 个月 ");
-            if (lived.getDays() > 0) livedRest.append(lived.getDays()).append(" 天");
-        }
-
-        String markName = "最近 · 打开岁月长河同步一次";
+        String markName = "最近 · 打开光阴长河同步一次";
         String markDays = "—";
         if (s.synced) {
             for (Mark m : s.marks) {
                 if (m.date.isBefore(today)) continue;
                 long d = ChronoUnit.DAYS.between(today, m.date);
                 markName = "最近 · " + m.name;
-                markDays = (d == 0) ? "就在今日" : "还剩 " + d + " 天";
+                markDays = (d == 0) ? "就在今日" : d + " 天";
                 break;
             }
         }
 
-        return new String[]{aheadText, livedNum, livedRest.toString(), markName, markDays};
+        return new String[]{livedText, aheadText, markName, markDays};
     }
 
-    /** 把一段时间写成倒计时语：N 年 M 个月 D 天（不补零）。 */
-    private static String durText(Period p) {
-        return p.getYears() + " 年 " + p.getMonths() + " 个月 " + p.getDays() + " 天";
+    /** 把一段时间写成「X 年零 X 个月 X 天」（零仅在有剩余时出现，零值段省略）。 */
+    private static String durSentence(Period p) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(p.getYears()).append(" 年");
+        if (p.getMonths() > 0 || p.getDays() > 0) {
+            sb.append(" 零 ");
+            if (p.getMonths() > 0) sb.append(p.getMonths()).append(" 个月 ");
+            if (p.getDays() > 0) sb.append(p.getDays()).append(" 天");
+        }
+        return sb.toString().trim();
     }
 
     private static int clampHorizon(int h) {

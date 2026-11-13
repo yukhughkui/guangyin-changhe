@@ -56,11 +56,10 @@ public class ChangheWidget extends AppWidgetProvider {
     private static void updateOne(Context context, AppWidgetManager manager, int id, int layout) {
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
         String[] t = ChangheData.texts(context);
-        views.setTextViewText(R.id.w_ahead, t[0]);
-        views.setTextViewText(R.id.w_lived_num, t[1]);
-        views.setTextViewText(R.id.w_lived_rest, t[2]);
-        views.setTextViewText(R.id.w_mark_name, t[3]);
-        views.setTextViewText(R.id.w_mark_days, t[4]);
+        views.setTextViewText(R.id.w_lived, t[0]);
+        views.setTextViewText(R.id.w_ahead, t[1]);
+        views.setTextViewText(R.id.w_mark_name, t[2]);
+        views.setTextViewText(R.id.w_mark_days, t[3]);
 
         Intent open = new Intent(context, MainActivity.class);
         open.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

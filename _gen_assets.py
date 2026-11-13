@@ -2,7 +2,7 @@ import os, math
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(ROOT, '长河.html')
+SRC = r'D:\微信公众号\人生倒计时\长河.html'
 
 html = open(SRC, encoding='utf-8').read()
 old = 'function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }'
@@ -87,7 +87,7 @@ for p in [r'C:\Windows\Fonts\msyh.ttc', r'C:\Windows\Fonts\simsun.ttc', r'C:\Win
         break
 
 def preview(path, W, H, compact):
-    # 系统小组件选择器缩略图：严格还原 App「小组件」页演示卡的 2×2 / 4×2 布局与文案
+    # 系统小组件选择器缩略图：严格还原 App「小组件」页演示卡的 2×2 / 4×2 三行布局与文案
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     d.rounded_rectangle([6, 6, W - 6, H - 6], radius=24,
@@ -96,21 +96,22 @@ def preview(path, W, H, compact):
     if not F:
         d.line([(26, H // 2), (W - 26, H // 2)], fill=(228, 235, 231, 255), width=2)
         im.save(path); return
-    f_lbl = font(r'C:\Windows\Fonts\msyh.ttc', 12) or F
-    f_big = font(r'C:\Windows\Fonts\msyh.ttc', 30) or F
-    f_mid = font(r'C:\Windows\Fonts\msyh.ttc', 15) or F
-    f_small = font(r'C:\Windows\Fonts\msyh.ttc', 13) or F
-    d.text((20, 18), '岁月长河', font=f_small, fill=INK3 + (255,))
-    d.text((20, 48), '已在此间', font=f_lbl, fill=INK2 + (255,))
-    d.text((W - 96, 48), '前方尚有 55 年', font=f_lbl, fill=INK2 + (255,))
-    d.text((20, 70), '24 个年头', font=f_big, fill=JADE + (255,))
-    if not compact:   # 4×2：右侧补「零 4 个月 29 天」
-        d.text((200, 78), '零 4 个月 29 天', font=f_mid, fill=INK2 + (255,))
-    line_y = 150 if compact else 104
-    d.line([(20, line_y), (W - 20, line_y)], fill=(228, 235, 231, 255), width=2)
-    by = 162 if compact else 116
-    d.text((20, by), '最近 · 元旦', font=f_mid, fill=INK2 + (255,))
-    d.text((W - 60, by - 2), '48 天', font=f_mid, fill=JADE + (255,))
+    f_brand = font(r'C:\Windows\Fonts\msyh.ttc', 12) or F
+    sz = 13 if compact else 15
+    f_line = font(r'C:\Windows\Fonts\msyh.ttc', sz) or F
+    f_mark = font(r'C:\Windows\Fonts\msyh.ttc', 13 if compact else 14) or F
+    d.text((16, 16), '光阴长河', font=f_brand, fill=INK3 + (255,))
+    lived = '已在此间 24 年 零 4 个月 30 天'
+    ahead = '前方尚有 55 年 零 7 个月 1 天'
+    y1 = 54 if compact else 52
+    dy = 44 if compact else 48
+    d.text((16, y1), lived, font=f_line, fill=JADE + (255,))
+    d.text((16, y1 + dy), ahead, font=f_line, fill=INK2 + (255,))
+    line_y = y1 + dy * 2 + 10
+    d.line([(16, line_y), (W - 16, line_y)], fill=(228, 235, 231, 255), width=2)
+    by = line_y + 14
+    d.text((16, by), '最近 · 元旦', font=f_mark, fill=INK2 + (255,))
+    d.text((W - 58, by - 2), '47 天', font=f_mark, fill=JADE + (255,))
     im.save(path)
 
 
