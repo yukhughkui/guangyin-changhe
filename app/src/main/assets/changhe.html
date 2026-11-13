@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F5F1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="岁月长河">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23F4F5F1'/%3E%3Cpath d='M18 108 Q45 96 72 108 T126 108 T162 108' fill='none' stroke='%233C6A60' stroke-width='3'/%3E%3Cpath d='M18 124 Q45 112 72 124 T126 124 T162 124' fill='none' stroke='%237FA79E' stroke-width='2' opacity='.6'/%3E%3Ccircle cx='90' cy='70' r='4' fill='%233C6A60'/%3E%3Cpath d='M90 66 C74 40 52 40 40 48 C56 56 72 62 90 70 C108 62 124 56 140 48 C128 40 106 40 90 66Z' fill='none' stroke='%233C6A60' stroke-width='2'/%3E%3C/svg%3E">
+<title>岁月长河 · 人生倒计时</title>
+<style>
+:root{
+  --bg:#F4F5F1; --surface:#FCFCFA; --surface-2:#EDF1EE; --surface-3:#E4EBE7;
+  --ink:#22302D; --ink-2:#5C6C67; --ink-3:#97A7A1;
+  --line:rgba(34,48,45,.11); --line-2:rgba(34,48,45,.06);
+  --jade:#3C6A60; --jade-2:#7FA79E; --jade-3:rgba(60,106,96,.10);
+  --gold:#A8874E;
+  --serif:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;
+  --mono:"SFMono-Regular","Roboto Mono","DIN Alternate",Consolas,"Courier New",monospace;
+}
+html[data-theme="night"]{
+  --bg:#111917; --surface:#182220; --surface-2:#1E2B28; --surface-3:#24332F;
+  --ink:#E6EAE6; --ink-2:#9FB0AA; --ink-3:#6E837C;
+  --line:rgba(230,234,230,.12); --line-2:rgba(230,234,230,.06);
+  --jade:#8FBFB2; --jade-2:#5E8B80; --jade-3:rgba(143,191,178,.12);
+  --gold:#C7A874;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent!important}
+:focus,:focus-visible{outline:none!important;-webkit-tap-highlight-color:transparent!important}
+button,input,select,textarea,[tabindex]{outline:none!important;-webkit-tap-highlight-color:transparent!important}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
+body{
+  background:#E7EAE5; color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased; font-size:15px; line-height:1.65;
+}
+html[data-theme="night"] body{background:#0B110F}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+.app{
+  width:100%; max-width:430px; margin:0 auto; height:100vh; height:100dvh;
+  position:fixed; left:0; right:0; top:0; bottom:0;
+  display:flex; flex-direction:column; background:var(--bg);
+  overflow:hidden;
+}
+@media (min-width:600px){
+  body{padding:26px 0}
+  .app{
+    position:relative; top:auto; right:auto; bottom:auto; left:auto;
+    height:min(880px,calc(100vh - 52px)); height:min(880px,calc(100dvh - 52px));
+    border-radius:26px; box-shadow:0 18px 60px rgba(20,35,30,.16); border:1px solid var(--line)
+  }
+}
+.topbar{
+  flex:none; padding:16px 22px 10px; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--line-2); background:var(--bg);
+}
+.brand{display:flex;align-items:center;gap:9px}
+.brand svg{width:26px;height:26px;flex:none}
+.brand b{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.12em}
+.brand em{font-style:normal;font-size:10px;color:var(--ink-3);letter-spacing:.16em;margin-left:2px;padding-top:5px}
+.ghost-btn{
+  font-size:12px;color:var(--ink-2);border:1px solid var(--line);border-radius:99px;
+  padding:5px 13px;letter-spacing:.08em;background:var(--surface);
+}
+main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+main::-webkit-scrollbar{display:none}
+.page{display:none;padding:20px 22px 34px;animation:fade .35s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.tabbar{
+  flex:none;display:flex;border-top:1px solid var(--line);background:var(--surface);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar button{flex:1;padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:10px;letter-spacing:.1em}
+.tabbar button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tabbar button.on{color:var(--jade)}
+.tabbar button.on svg{stroke-width:1.9}
+
+/* 首页 */
+.notice{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:1px solid var(--line);background:var(--surface);border-radius:10px;
+  padding:9px 12px;margin-bottom:20px;font-size:12px;color:var(--ink-2);
+}
+.notice span{flex:1}
+.notice button{color:var(--jade);font-size:12px;white-space:nowrap}
+.eyebrow{font-size:11px;letter-spacing:.28em;color:var(--ink-3);margin:0 0 16px}
+
+/* 已在此间：题跋式非对称编排，不用格子与通栏分隔 */
+.lived{position:relative}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 94px;gap:16px;align-items:stretch}
+.hero-left{min-width:0}
+.hero-num-row{display:flex;align-items:flex-start;gap:5px;line-height:.84}
+.hero-num{display:block;font-family:var(--mono);font-size:104px;font-weight:200;letter-spacing:-.095em;font-variant-numeric:tabular-nums;color:var(--ink);line-height:.86}
+.hero-unit{writing-mode:vertical-rl;font-family:var(--serif);font-size:14px;color:var(--jade);letter-spacing:.28em;margin-top:5px;opacity:.85}
+.hero-md{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:15px;letter-spacing:.08em;white-space:nowrap}
+.hero-md b{font-family:var(--mono);font-size:22px;font-weight:400;color:var(--ink);letter-spacing:-.02em;margin:0 4px 0 2px}
+.hero-time{display:flex;align-items:center;gap:9px;margin-top:6px;font-family:var(--mono);font-size:18px;color:var(--jade);letter-spacing:.1em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hero-time::before{content:"";width:20px;height:1px;background:var(--line);flex:none}
+.hero-side{border-left:1px solid var(--line);padding:4px 0 4px 13px;display:flex;flex-direction:column;align-items:flex-end;text-align:right;min-height:158px}
+.hero-from{font-size:10px;color:var(--ink-3);letter-spacing:.06em;white-space:nowrap}
+.hero-seal{writing-mode:vertical-rl;font-family:var(--serif);font-size:15px;letter-spacing:.52em;color:var(--jade-2);opacity:.72;flex:1;display:flex;align-items:center;justify-content:center;user-select:none}
+.hero-pct{font-size:10px;color:var(--ink-3);white-space:nowrap;letter-spacing:.04em}
+.hero-pct b{font-family:var(--mono);font-size:15px;color:var(--jade);font-weight:500;margin-left:3px}
+.hero-water{position:relative;height:1px;background:var(--line);margin:28px 0 0}
+.hero-water i{position:absolute;left:0;top:-1px;height:3px;border-radius:99px;background:linear-gradient(90deg,rgba(127,167,158,0),var(--jade-2));transition:width .8s ease}
+html[data-theme="night"] .hero-water i{background:linear-gradient(90deg,rgba(94,139,128,0),var(--jade-2))}
+.hero-now{position:absolute;top:-3.5px;width:7px;height:7px;border-radius:50%;background:var(--bg);border:1.5px solid var(--jade);transform:translateX(-50%)}
+.hero-now-label{position:absolute;top:8px;transform:translateX(-50%);font-size:9.5px;color:var(--ink-3);letter-spacing:.12em;white-space:nowrap}
+.hero-now-label b{font-family:var(--mono);font-weight:500;color:var(--ink-2);letter-spacing:0}
+.river-wrap{margin:22px 0 2px;position:relative}
+#riverSvg{display:block;width:100%;height:auto}
+#riverSvg text{font-family:var(--serif)}
+#riverSvg .rl-cap{font-size:11px;letter-spacing:2.4px;fill:var(--ink-2)}
+#riverSvg .rl-dir{font-size:9.5px;letter-spacing:2px;fill:var(--ink-3)}
+.ripple{transform-box:fill-box;transform-origin:center;animation:ripple 3.9s ease-out infinite}
+@keyframes ripple{0%{transform:scale(.5);opacity:.6}70%{transform:scale(3.1);opacity:0}100%{transform:scale(3.1);opacity:0}}
+.section-rule{height:1px;background:var(--line);margin:26px 0 22px}
+.big-label{font-family:var(--serif);font-size:16px;letter-spacing:.1em;margin:0 0 12px}
+.ahead{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;font-family:var(--mono);font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--jade)}
+.ahead u{text-decoration:none;font-family:inherit;font-size:12px;color:var(--ink-3);margin:0 3px 0 -2px}
+.ahead-note{font-size:12px;color:var(--ink-2);margin-top:8px}
+.ahead .zero{font-family:var(--serif);font-size:18px;color:var(--ink-2);margin:0 5px;font-weight:400}
+.progress-row{margin-top:20px;display:flex;flex-direction:column;gap:13px}
+.prog{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--ink-2)}
+.prog>span:first-child{width:36px;flex:none;color:var(--ink-3);letter-spacing:.08em}
+.prog .bar{flex:1;height:3px;background:var(--surface-3);border-radius:99px;overflow:hidden}
+.prog .bar i{display:block;height:100%;background:var(--jade-2);border-radius:99px;transition:width .6s ease}
+.prog>em{font-style:normal;width:46px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.quote{margin-top:32px;padding:2px 0 2px 18px;border-left:1px solid var(--jade-2);cursor:pointer}
+.quote .q-text{display:block;font-family:var(--serif);font-size:16px;line-height:2.05;color:var(--ink);letter-spacing:.035em}
+.quote .q-from{display:block;text-align:right;font-family:var(--serif);font-size:11px;color:var(--ink-3);letter-spacing:.08em;margin-top:10px}
+.quote .q-foot{display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink-3);letter-spacing:.16em;margin-top:14px}
+
+/* 卡片与刻度 */
+.group{margin-bottom:10px}
+.group-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.group-head h3{font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.14em;margin:0}
+.group-head .act{font-size:12px;color:var(--jade);letter-spacing:.05em}
+.group-head .act.muted{color:var(--ink-3)}
+.mark{
+  border:1px solid var(--line);background:var(--surface);border-radius:13px;
+  padding:11px 16px 10px;margin-bottom:8px;position:relative;overflow:hidden;
+  transition:border-color .25s ease;
+}
+.mark:active{border-color:var(--jade-2)}
+.mark.past{opacity:.5}
+.mark-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.mark-name{font-family:var(--serif);font-size:15px;letter-spacing:.06em}
+.mark-annual .mark-name::after{content:" · 每年";font-family:sans-serif;font-size:10px;color:var(--ink-3);letter-spacing:0}
+.mark-date{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+.mark-main{display:flex;align-items:baseline;gap:7px;margin:6px 0 1px}
+.mark-main b{font-family:var(--mono);font-size:29px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--jade);line-height:1.2}
+.mark-main span{font-size:12px;color:var(--ink-2)}
+.mark-hai{font-family:var(--serif);font-size:13px;color:var(--ink-2);letter-spacing:.04em}
+.mark-main .today{font-family:var(--serif);font-size:23px;color:var(--gold)}
+.mark-sub{font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.mark-line{height:2px;background:var(--surface-3);border-radius:99px;margin-top:9px;overflow:hidden}
+.mark-line i{display:block;height:100%;background:var(--jade-2);border-radius:99px;opacity:.8}
+.mark-detail{display:none;border-top:1px dashed var(--line);margin-top:12px;padding-top:11px}
+.mark.open .mark-detail{display:block}
+.detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px}
+.detail-grid div{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-2);border-bottom:1px solid var(--line-2);padding-bottom:5px}
+.detail-grid b{font-family:var(--mono);font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.detail-note{font-size:11px;color:var(--ink-3);line-height:1.9;margin-top:10px}
+.del-btn{
+  position:absolute;right:12px;top:12px;width:22px;height:22px;border-radius:50%;
+  background:var(--surface-3);color:var(--ink-2);font-size:15px;line-height:20px;text-align:center;display:none;z-index:2;
+}
+.mark.editing .del-btn{display:block}
+.mark.editing .mark-date{display:none}
+.mark.editing{cursor:pointer}
+.mark-edit{display:none;font-size:11px;color:var(--jade);letter-spacing:.08em;margin-top:10px;border-top:1px dashed var(--line);padding-top:9px}
+.mark.editing .mark-edit{display:block}
+.empty{font-size:12px;color:var(--ink-3);padding:14px 2px;line-height:1.9}
+.acts{display:flex;align-items:center;gap:13px}
+.fold-bar{
+  display:block;width:100%;text-align:center;padding:8px 0 2px;margin-top:1px;
+  border-top:1px dashed var(--line);font-size:11.5px;color:var(--ink-2);letter-spacing:.1em;
+}
+.fold-bar b{font-family:var(--mono);font-weight:500;color:var(--jade);letter-spacing:0}
+.fold-bar .go{color:var(--jade);font-style:normal}
+.verse{margin:24px 0 6px;padding:2px 0 2px 17px;border-left:1px solid var(--line);cursor:pointer}
+.verse .v-text{display:block;font-family:var(--serif);font-size:14px;line-height:2.05;color:var(--ink-2);letter-spacing:.04em}
+.verse .v-from{display:block;font-family:var(--serif);font-size:11px;color:var(--ink-3);letter-spacing:.06em;margin-top:9px}
+
+/* 小组件预览：与桌面实际渲染一致（2×2 与 4×2 内容相同，仅尺寸不同） */
+.lede{font-size:12.5px;color:var(--ink-2);line-height:2;margin:0 0 20px}
+.desktop{background:#DCE3DE;border-radius:16px;padding:20px 18px;margin-bottom:16px}
+html[data-theme="night"] .desktop{background:#0A1210;border:1px solid var(--line)}
+.desktop-cap{font-size:10px;letter-spacing:.18em;color:var(--ink-3);margin-bottom:12px}
+.wdemo-wrap{display:flex;align-items:stretch;gap:14px;margin-bottom:12px}
+.wdemo{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:0 5px 18px rgba(20,40,34,.07);display:flex;flex-direction:column;justify-content:space-between}
+.wdemo-sm{width:54%;aspect-ratio:1}
+.wdemo-wide{width:100%;aspect-ratio:2.06/1;margin-top:6px}
+.wdemo-note{flex:1;display:flex;flex-direction:column;justify-content:center;font-size:11px;color:var(--ink-3);line-height:2;letter-spacing:.04em}
+.wdemo-note b{font-family:var(--mono);color:var(--jade);font-weight:500}
+.wd-top{display:flex;justify-content:space-between;align-items:baseline}
+.wd-k{font-family:var(--serif);font-size:10px;letter-spacing:.12em;color:var(--ink-3)}
+.wd-ahead{font-family:var(--serif);font-size:10px;color:var(--ink-2);white-space:nowrap}
+.wdemo-wide .wd-ahead{font-size:11px}
+.wd-big{display:flex;align-items:baseline;gap:4px;margin-top:2px}
+.wd-num{font-family:var(--serif);color:var(--jade);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.wdemo-wide .wd-num{font-size:36px}
+.wd-unit{font-family:var(--serif);color:var(--jade-2);font-size:12px;margin-bottom:3px}
+.wdemo-sm .wd-rest{display:none}
+.wd-rest{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-2);text-align:right;letter-spacing:.02em;white-space:nowrap}
+.wdemo-wide .wd-rest{font-size:11px}
+.wd-line{height:1px;background:var(--line);margin:9px 0 8px}
+.wd-bot{display:flex;justify-content:space-between;align-items:baseline}
+.wd-mark{font-family:var(--serif);font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wdemo-wide .wd-mark{font-size:12px}
+.wd-days{font-family:var(--serif);font-size:14px;color:var(--jade);white-space:nowrap}
+.wdemo-wide .wd-days{font-size:17px}
+.info-box{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:15px 17px;margin-top:18px}
+.info-box h4{font-family:var(--serif);font-size:14px;letter-spacing:.1em;margin:0 0 9px}
+.info-box p{font-size:12px;color:var(--ink-2);line-height:2;margin:0 0 8px}
+.info-box p:last-child{margin-bottom:0}
+.info-box b{color:var(--ink);font-weight:600}
+.addw{display:flex;gap:12px;margin-top:18px}
+.addw button{flex:1;padding:13px 10px;border-radius:12px;border:1px solid var(--jade);background:var(--jade);color:#fff;font-size:13px;letter-spacing:.1em;font-family:var(--serif);box-shadow:0 4px 14px rgba(60,106,96,.18)}
+.addw button.ghost{background:var(--surface);color:var(--jade)}
+.addw-note{font-size:11px;color:var(--ink-3);line-height:1.9;margin-top:10px;text-align:center}
+
+/* 设置 */
+.field{border-bottom:1px solid var(--line-2);padding:13px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.field:first-child{border-top:1px solid var(--line-2)}
+.field label{display:block;font-size:13.5px}
+.field small{display:block;font-size:11px;color:var(--ink-3);margin-top:2px;line-height:1.7}
+.field input[type=date],.field input[type=number],.field input[type=text]{
+  background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 9px;
+  font-family:var(--mono);font-size:12.5px;text-align:right;max-width:150px;outline:none;
+}
+.field input:focus{border-color:var(--jade-2)}
+.field input[type=text]{width:130px}
+.switch{width:42px;height:24px;border-radius:99px;background:var(--surface-3);position:relative;flex:none;transition:background .25s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.15);transition:transform .25s}
+.switch.on{background:var(--jade)}
+.switch.on::after{transform:translateX(18px)}
+/* 自述：字号、行距、段距全篇一致，不加粗、不缩字、不夹空格 */
+.about{font-family:var(--serif);font-size:14px;line-height:2.1;color:var(--ink-2);letter-spacing:.035em}
+.about p{margin:0 0 18px}
+.about p:last-child{margin-bottom:0}
+.sig{
+  font-family:var(--serif);font-size:12px;line-height:2;color:var(--ink-3);letter-spacing:.14em;
+  margin-top:26px;padding-top:16px;border-top:1px solid var(--line);text-align:right;
+}
+.danger{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:11px;font-size:12.5px;color:var(--ink-2);margin-top:22px}
+
+/* 弹层 */
+.sheet-bg{position:fixed;inset:0;background:rgba(15,26,22,.42);display:none;z-index:20;align-items:flex-end;justify-content:center}
+.sheet-bg.show{display:flex}
+.sheet{width:100%;max-width:430px;background:var(--bg);border-radius:20px 20px 0 0;padding:22px 22px calc(24px + env(safe-area-inset-bottom));animation:up .28s ease;max-height:90vh;overflow-y:auto}
+/* 页内自绘日期滚轮：不弹系统选择框，定位统一 */
+.dp-field{align-items:flex-start;flex-wrap:wrap}
+.dp-wrap{width:100%;margin-top:2px}
+.dp-display{font-family:var(--mono);font-size:13px;color:var(--ink);text-align:left;letter-spacing:.03em;margin-bottom:9px;font-variant-numeric:tabular-nums}
+.dp-cols{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);height:138px;position:relative}
+.dp-cols::after{content:"";position:absolute;left:6px;right:6px;top:50%;height:30px;margin-top:-15px;background:var(--jade-3);border-radius:7px;pointer-events:none}
+.dp-col{flex:1;height:138px;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;position:relative}
+.dp-col::-webkit-scrollbar{display:none}
+.dp-i{height:30px;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.dp-i.sel{color:var(--jade);font-weight:600}
+.dp-pad{height:54px;flex:none}
+@keyframes up{from{transform:translateY(30px);opacity:.5}to{transform:none;opacity:1}}
+.sheet h3{font-family:var(--serif);font-size:17px;letter-spacing:.12em;margin:0 0 18px}
+.sheet .field input{max-width:none;width:100%;text-align:left}
+.sheet-actions{display:flex;gap:10px;margin-top:22px}
+.sheet-actions button{flex:1;padding:11px;border-radius:10px;font-size:13.5px;letter-spacing:.08em;border:1px solid var(--line)}
+.sheet-actions .primary{background:var(--jade);color:#fff;border-color:var(--jade)}
+html[data-theme="night"] .sheet-actions .primary{color:#111917}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:var(--bg);font-size:12px;padding:9px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:30;white-space:nowrap}
+.toast.show{opacity:.94;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 18 C13 5 5 6 2 9 C9 13 15 16 20 19 C25 16 31 13 38 9 C35 6 27 5 20 18Z" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".75"/>
+        <path d="M4 28 Q12 24 20 28 T36 28" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/>
+        <path d="M4 33 Q12 29 20 33 T36 33" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".35"/>
+        <circle cx="20" cy="21" r="1.7" fill="currentColor"/>
+      </svg>
+      <b>岁月长河</b><em>人生倒计时</em>
+    </div>
+    <button class="ghost-btn" id="themeBtn">夜</button>
+  </header>
+
+  <main id="main">
+    <!-- 河 -->
+    <section class="page active" id="p-river">
+      <div class="notice" id="notice">
+        <span>当前为示例日期，先去写下自己的出生日期</span>
+        <button id="noticeBtn">去设置</button>
+      </div>
+
+      <p class="eyebrow">你已在此间</p>
+      <div class="lived" id="livedClock">
+        <div class="hero">
+          <div class="hero-left">
+            <div class="hero-num-row"><span class="hero-num" id="heroY">—</span><span class="hero-unit">个年头</span></div>
+            <div class="hero-md" id="heroMD"></div>
+            <div class="hero-time" id="heroTime"></div>
+          </div>
+          <div class="hero-side">
+            <div class="hero-from" id="heroFrom">—</div>
+            <div class="hero-seal">逝者如斯</div>
+            <div class="hero-pct">已流过 <b id="heroPct">—</b></div>
+          </div>
+        </div>
+        <div class="hero-water">
+          <i id="heroBar" style="width:0%"></i>
+          <span class="hero-now" id="heroNow" style="left:0%"></span>
+          <span class="hero-now-label" id="heroNowLabel" style="left:18%">此刻 · 第 <b id="heroDay">—</b> 天</span>
+        </div>
+      </div>
+
+      <div class="river-wrap">
+        <svg id="riverSvg" viewBox="0 0 360 184" preserveAspectRatio="xMidYMid meet" aria-label="时间长河"></svg>
+      </div>
+
+      <div class="section-rule"></div>
+      <h2 class="big-label">前方尚有</h2>
+      <div class="ahead" id="aheadClock"></div>
+      <div class="ahead-note" id="aheadNote"></div>
+
+      <div class="progress-row" id="progressRow"></div>
+
+      <div class="quote" id="quote">
+        <span class="q-text" id="quoteText">—</span>
+        <span class="q-from" id="quoteFrom">—</span>
+        <div class="q-foot"><span>轻触 · 另取一句</span><span id="quoteNo">—</span></div>
+      </div>
+
+      <div class="group" style="margin-top:30px">
+        <div class="group-head"><h3>最近的刻度</h3><span class="act" id="toMarks">看全部</span></div>
+        <div id="nearest"></div>
+      </div>
+    </section>
+
+    <!-- 刻度 -->
+    <section class="page" id="p-marks">
+      <div class="group">
+        <div class="group-head">
+          <h3>人生节点</h3>
+          <span class="acts"><button class="act" id="editBtn">编辑</button><button class="act" id="addBtn">＋ 添加</button></span>
+        </div>
+        <div id="eventList"></div>
+        <button class="fold-bar" id="foldEvent"></button>
+      </div>
+      <div class="group">
+        <div class="group-head">
+          <h3>年岁刻度</h3>
+          <span class="acts"><button class="act" id="ageEditBtn">编辑</button><button class="act" id="ageAddBtn">＋ 添加</button></span>
+        </div>
+        <div id="ageList"></div>
+        <button class="fold-bar" id="foldAge"></button>
+      </div>
+      <div class="group">
+        <div class="group-head"><h3>时节</h3></div>
+        <div id="festivalList"></div>
+        <button class="fold-bar" id="foldFestival"></button>
+      </div>
+      <div class="group">
+        <div class="group-head">
+          <h3>纪念日</h3>
+          <span class="acts"><button class="act" id="memEditBtn">编辑</button><button class="act" id="memAddBtn">＋ 添加</button></span>
+        </div>
+        <div id="memorialList"></div>
+        <button class="fold-bar" id="foldMemorial"></button>
+      </div>
+      <div class="verse" id="verse">
+        <span class="v-text" id="verseText">—</span>
+        <span class="v-from" id="verseFrom">—</span>
+      </div>
+    </section>
+
+    <!-- 小组件 -->
+    <section class="page" id="p-widget">
+      <p class="eyebrow">不必打开，也能看见</p>
+
+      <div class="desktop" style="margin-top:18px">
+        <div class="desktop-cap">小尺寸 · 2 × 2</div>
+        <div class="wdemo-wrap">
+          <div class="wdemo wdemo-sm">
+            <div class="wd-top"><span class="wd-k">已在此间</span><span class="wd-ahead" id="wSmAhead">前方尚有 —</span></div>
+            <div class="wd-big"><span class="wd-num" id="wSmNum">—</span><span class="wd-unit">个年头</span></div>
+            <div class="wd-line"></div>
+            <div class="wd-bot"><span class="wd-mark" id="wSmMark">最近 · —</span><span class="wd-days" id="wSmDays">—</span></div>
+          </div>
+          <div class="wdemo-note">2 × 2<br>桌面占两格<br>正方形</div>
+        </div>
+        <div class="desktop-cap" style="margin-top:18px">中尺寸 · 4 × 2</div>
+        <div class="wdemo wdemo-wide">
+          <div class="wd-top"><span class="wd-k">已在此间</span><span class="wd-ahead" id="wWideAhead">前方尚有 —</span></div>
+          <div class="wd-big"><span class="wd-num" id="wWideNum">—</span><span class="wd-unit">个年头</span><span class="wd-rest" id="wWideRest">—</span></div>
+          <div class="wd-line"></div>
+          <div class="wd-bot"><span class="wd-mark" id="wWideMark">最近 · —</span><span class="wd-days" id="wWideDays">—</span></div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h4>此刻的形态</h4>
+        <p>断网可用 · 数据只存本机</p>
+      </div>
+      <div class="info-box">
+        <h4>两种尺寸</h4>
+        <p>小 · 2 × 2　　宽 · 4 × 2</p>
+        <p>Android · AppWidget　　iOS · WidgetKit</p>
+      </div>
+      <div class="info-box">
+        <h4>只放三件事</h4>
+        <p>已在此间 · 前方尚有 · 最近的一个刻度</p>
+      </div>
+
+      <div class="addw">
+        <button id="addWSmall">添加到桌面 · 小</button>
+        <button id="addWWide" class="ghost">添加到桌面 · 宽</button>
+      </div>
+      <p class="addw-note" id="addWNote">点击后由系统确认，即可落到桌面</p>
+    </section>
+
+    <!-- 我的 -->
+    <section class="page" id="p-self">
+      <p class="eyebrow">把河校准</p>
+      <div style="margin-bottom:28px">
+        <div class="field">
+          <div><label>出生日期</label></div>
+          <input type="date" id="setBirth">
+        </div>
+        <div class="field">
+          <div><label>想走到的年岁</label></div>
+          <input type="number" id="setHorizon" min="1" max="130" step="1">
+        </div>
+        <div class="field">
+          <div><label>关注的年岁</label></div>
+          <input type="text" id="setAges" placeholder="30,40,50,60">
+        </div>
+        <div class="field">
+          <div><label>显示秒</label></div>
+          <button class="switch" id="setSeconds" aria-label="显示秒"></button>
+        </div>
+        <div class="field">
+          <div><label>夜航</label></div>
+          <button class="switch" id="setNight" aria-label="夜航"></button>
+        </div>
+      </div>
+
+      <div class="section-rule"></div>
+      <div class="about">
+        <p>我们在这个世界上的时间有限，但很多事物都想要夺走你有限生命里的有限时间。</p>
+        <p>岁月长河这款软件不做什么，它只把你的时间还原成看得见的数字：已经流过的、还在前方的，以及你为自己设下的。</p>
+        <p>看见它，是为了把时间还给自己。</p>
+        <p>少向外追一个答案，多向内问自己的本心。</p>
+        <p>春秋蝉可逆流而上，我们虽回不去过往，但可留住当下的寻常。</p>
+      </div>
+      <div class="sig">云渡禅穹 · 在快节奏的世界里慢慢写字</div>
+      <button class="danger" id="resetBtn">恢复示例数据</button>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="on" data-page="river"><svg viewBox="0 0 24 24"><path d="M2 9c3-2 5 2 8 0s5-2 8 0 4 0 4 0M2 15c3-2 5 2 8 0s5-2 8 0 4 0 4 0"/></svg>河</button>
+    <button data-page="marks"><svg viewBox="0 0 24 24"><path d="M4 4v16M4 8h5M4 14h5M13 5h7M13 11h7M13 17h7"/></svg>刻度</button>
+    <button data-page="widget"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="18" height="8" rx="1.5"/></svg>小组件</button>
+    <button data-page="self"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>我的</button>
+  </nav>
+</div>
+
+<div class="sheet-bg" id="sheetBg">
+  <div class="sheet">
+    <h3 id="sheetTitle">添加一个刻度</h3>
+    <div class="field"><div><label id="evNameLabel">名称</label><small id="evNameHint">想看见的那件事</small></div><input type="text" id="evName" placeholder="例如：研究生毕业" maxlength="18"></div>
+    <div class="field dp-field" id="evDateField"><div><label>日期</label><small id="evDateHint">它将在哪一天抵达</small></div>
+      <div class="dp-wrap">
+        <div class="dp-display" id="dpDisplay">—</div>
+        <div class="dp-cols">
+          <div class="dp-col" data-unit="y" id="dpY"></div>
+          <div class="dp-col" data-unit="m" id="dpM"></div>
+          <div class="dp-col" data-unit="d" id="dpD"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <button id="evCancel">取消</button>
+      <button class="primary" id="evSave">记下</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- 状态 ---------- */
+var KEY = "changhe.v1";
+var DEFAULT = {
+  v: 2,
+  birth: "2002-06-15",
+  horizon: 80,
+  ages: [30,40,50,60],
+  customAges: [],
+  showSeconds: true,
+  night: false,
+  customized: false,
+  events: [
+    {id:"e1", name:"大学毕业", date:"2027-06-25"},
+    {id:"e2", name:"研究生毕业", date:"2030-06-20"},
+    {id:"e3", name:"买房", date:"2031-06-20"},
+    {id:"e4", name:"结婚", date:"2032-05-20"},
+    {id:"e5", name:"生子", date:"2034-08-08"},
+    {id:"e6", name:"退休", date:"2055-01-01"}
+  ],
+  memorials: [
+    {id:"m1", name:"父亲的生日", date:"1970-03-12"},
+    {id:"m2", name:"母亲的生日", date:"1972-07-08"},
+    {id:"m3", name:"姐姐的生日", date:"1998-11-02"},
+    {id:"m4", name:"自己的生日", date:"2002-06-15"}
+  ]
+};
+var S = load();
+var editing = {event:false, age:false, memorial:false};
+var nearestTs = 0;
+var nearestName = "";
+var dayKey = "";
+var quoteIdx = 0;
+var verseIdx = 21;
+var expanded = {event:false, age:false, festival:false, memorial:false};
+var sheetMode = "event";
+var sheetEditId = null;
+/* 只取古人写光阴的句子，自先秦至明清，不取近人语 */
+var QUOTES = [
+  /* 先秦 */
+  {t:"逝者如斯夫，不舍昼夜。", f:"《论语 · 子罕》"},
+  {t:"人生天地之间，若白驹之过隙，忽然而已。", f:"《庄子 · 知北游》"},
+  {t:"日月忽其不淹兮，春与秋其代序。", f:"屈原《离骚》"},
+  {t:"惟草木之零落兮，恐美人之迟暮。", f:"屈原《离骚》"},
+  /* 汉魏六朝 */
+  {t:"百川东到海，何时复西归？", f:"汉乐府《长歌行》"},
+  {t:"少壮不努力，老大徒伤悲。", f:"汉乐府《长歌行》"},
+  {t:"青青园中葵，朝露待日晞。", f:"汉乐府《长歌行》"},
+  {t:"常恐秋节至，焜黄华叶衰。", f:"汉乐府《长歌行》"},
+  {t:"对酒当歌，人生几何！譬如朝露，去日苦多。", f:"曹操《短歌行》"},
+  {t:"人生天地间，忽如远行客。", f:"《古诗十九首》"},
+  {t:"生年不满百，常怀千岁忧。", f:"《古诗十九首》"},
+  {t:"昼短苦夜长，何不秉烛游？", f:"《古诗十九首》"},
+  {t:"盛年不重来，一日难再晨。", f:"陶渊明《杂诗》"},
+  {t:"及时当勉励，岁月不待人。", f:"陶渊明《杂诗》"},
+  /* 唐 */
+  {t:"天地者，万物之逆旅也；光阴者，百代之过客也。", f:"李白《春夜宴从弟桃花园序》"},
+  {t:"而浮生若梦，为欢几何？", f:"李白《春夜宴从弟桃花园序》"},
+  {t:"君不见黄河之水天上来，奔流到海不复回。", f:"李白《将进酒》"},
+  {t:"君不见高堂明镜悲白发，朝如青丝暮成雪。", f:"李白《将进酒》"},
+  {t:"弃我去者，昨日之日不可留。", f:"李白《宣州谢朓楼饯别校书叔云》"},
+  {t:"白日何短短，百年苦易满。", f:"李白《短歌行》"},
+  {t:"不知江月待何人，但见长江送流水。", f:"张若虚《春江花月夜》"},
+  {t:"人生代代无穷已，江月年年望相似。", f:"张若虚《春江花月夜》"},
+  {t:"江畔何人初见月？江月何年初照人？", f:"张若虚《春江花月夜》"},
+  {t:"年年岁岁花相似，岁岁年年人不同。", f:"刘希夷《代悲白头翁》"},
+  {t:"今年花落颜色改，明年花开复谁在？", f:"刘希夷《代悲白头翁》"},
+  {t:"劝君莫惜金缕衣，劝君惜取少年时。", f:"杜秋娘《金缕衣》"},
+  {t:"花开堪折直须折，莫待无花空折枝。", f:"杜秋娘《金缕衣》"},
+  {t:"读书不觉已春深，一寸光阴一寸金。", f:"王贞白《白鹿洞》"},
+  {t:"闲云潭影日悠悠，物换星移几度秋。", f:"王勃《滕王阁诗》"},
+  {t:"阁中帝子今何在？槛外长江空自流。", f:"王勃《滕王阁诗》"},
+  {t:"前不见古人，后不见来者。念天地之悠悠，独怆然而涕下。", f:"陈子昂《登幽州台歌》"},
+  {t:"无边落木萧萧下，不尽长江滚滚来。", f:"杜甫《登高》"},
+  {t:"少壮能几时，鬓发各已苍。", f:"杜甫《赠卫八处士》"},
+  {t:"但见时光流似箭，岂知天道曲如弓。", f:"韦庄《关河道中》"},
+  {t:"夕阳无限好，只是近黄昏。", f:"李商隐《登乐游原》"},
+  {t:"此情可待成追忆，只是当时已惘然。", f:"李商隐《锦瑟》"},
+  /* 五代两宋 */
+  {t:"林花谢了春红，太匆匆。", f:"李煜《相见欢》"},
+  {t:"自是人生长恨水长东。", f:"李煜《相见欢》"},
+  {t:"流水落花春去也，天上人间。", f:"李煜《浪淘沙》"},
+  {t:"世事漫随流水，算来一梦浮生。", f:"李煜《乌夜啼》"},
+  {t:"一向年光有限身，等闲离别易销魂。", f:"晏殊《浣溪沙》"},
+  {t:"无可奈何花落去，似曾相识燕归来。", f:"晏殊《浣溪沙》"},
+  {t:"时光只解催人老，不信多情。", f:"晏殊《采桑子》"},
+  {t:"满目山河空念远，落花风雨更伤春，不如怜取眼前人。", f:"晏殊《浣溪沙》"},
+  {t:"大江东去，浪淘尽，千古风流人物。", f:"苏轼《念奴娇 · 赤壁怀古》"},
+  {t:"人生如梦，一尊还酹江月。", f:"苏轼《念奴娇 · 赤壁怀古》"},
+  {t:"哀吾生之须臾，羡长江之无穷。", f:"苏轼《赤壁赋》"},
+  {t:"不知天上宫阙，今夕是何年。", f:"苏轼《水调歌头》"},
+  {t:"莫等闲，白了少年头，空悲切。", f:"岳飞《满江红》"},
+  {t:"三十功名尘与土，八千里路云和月。", f:"岳飞《满江红》"},
+  {t:"桃李春风一杯酒，江湖夜雨十年灯。", f:"黄庭坚《寄黄几复》"},
+  {t:"少年易老学难成，一寸光阴不可轻。", f:"朱熹《偶成》"},
+  {t:"未觉池塘春草梦，阶前梧叶已秋声。", f:"朱熹《偶成》"},
+  {t:"流光容易把人抛，红了樱桃，绿了芭蕉。", f:"蒋捷《一剪梅 · 舟过吴江》"},
+  {t:"悲欢离合总无情，一任阶前点滴到天明。", f:"蒋捷《虞美人 · 听雨》"},
+  {t:"浮生只合尊前老，雪满长安道。", f:"舒亶《虞美人 · 寄公度》"},
+  /* 元曲 */
+  {t:"百岁光阴一梦蝶，重回首往事堪嗟。", f:"马致远《夜行船 · 秋思》"},
+  {t:"今日春来，明朝花谢，急罚盏夜阑灯灭。", f:"马致远《夜行船 · 秋思》"},
+  {t:"人生百年有几，念良辰美景，休放虚过。", f:"元好问《骤雨打新荷》"},
+  {t:"且酩酊，任他两轮日月，来往如梭。", f:"元好问《骤雨打新荷》"},
+  {t:"今日少年明日老。", f:"陈草庵《山坡羊 · 叹世》"},
+  /* 明清 */
+  {t:"滚滚长江东逝水，浪花淘尽英雄。", f:"杨慎《廿一史弹词》"},
+  {t:"青山依旧在，几度夕阳红。", f:"杨慎《廿一史弹词》"},
+  {t:"白发渔樵江渚上，惯看秋月春风。", f:"杨慎《廿一史弹词》"},
+  {t:"谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳。", f:"纳兰性德《浣溪沙》"}
+];
+function showQuote(){
+  var q = QUOTES[quoteIdx % QUOTES.length];
+  $("quoteText").textContent = q.t;
+  $("quoteFrom").textContent = "—— " + q.f;
+  $("quoteNo").textContent = pad(quoteIdx+1)+" / "+pad(QUOTES.length);
+}
+function showVerse(){
+  var q = QUOTES[verseIdx % QUOTES.length];
+  $("verseText").textContent = q.t;
+  $("verseFrom").textContent = "—— " + q.f;
+}
+
+function load(){
+  try{
+    var raw = localStorage.getItem(KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEFAULT));
+    var o = JSON.parse(raw), d = JSON.parse(JSON.stringify(DEFAULT));
+    for(var k in d) if(Object.prototype.hasOwnProperty.call(o,k)) d[k]=o[k];
+    if(!o.v || o.v < 2){
+      var add = [["结婚","2032-05-20"],["生子","2034-08-08"]], a, q, exists;
+      for(a=0;a<add.length;a++){
+        exists = false;
+        for(q=0;q<d.events.length;q++) if(d.events[q].name===add[a][0]) exists=true;
+        if(!exists) d.events.push({id:"e"+Date.now()+a, name:add[a][0], date:add[a][1]});
+      }
+      d.v = 2;
+    }
+    return d;
+  }catch(e){ return JSON.parse(JSON.stringify(DEFAULT)); }
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} try{ if(window.ChangheBridge && window.ChangheBridge.onSettingsChanged) window.ChangheBridge.onSettingsChanged(); }catch(e){} }
+window.ChangheSnapshot = function(){try{var out={birth:S.birth,horizon:S.horizon,marks:[]};var y=new Date().getFullYear();function add(n,d){var s=(d instanceof Date)?iso(d):'';if(n&&s)out.marks.push({n:n,d:s});}S.events.forEach(function(e){add(e.name,pDate(e.date));});buildAges().forEach(function(e){add(e.name,e.date);});[0,1,2].forEach(function(k){var base=new Date(y+k,0,1);buildFestivals(base).forEach(function(e){add(e.name,e.date);});buildMemorials(base).forEach(function(e){add(e.name,e.date);});});return JSON.stringify(out);}catch(e){return JSON.stringify({error:String(e)});}};
+function $(id){ return document.getElementById(id); }
+function pad(n){ return n<10 ? "0"+n : ""+n; }
+function fmt(n){ return (n||0).toLocaleString("zh-CN"); }
+function pDate(s){
+  var a = s.split("-");
+  return new Date(+a[0], +a[1]-1, +a[2], 0, 0, 0, 0);
+}
+function iso(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function dot(d){ return d.getFullYear()+"."+pad(d.getMonth()+1)+"."+pad(d.getDate()); }
+function shortDot(d){ return d.getFullYear()+"."+ (d.getMonth()+1) +"."+ d.getDate(); }
+function birthDate(){ return pDate(S.birth); }
+function horizonDate(){
+  var b = birthDate(), d = new Date(b.getTime());
+  d.setFullYear(b.getFullYear() + (+S.horizon || 80));
+  return d;
+}
+function riverLength(){ return horizonDate() - birthDate(); }
+
+/* ---------- 时间差：年 / 月 / 日 / 时 / 分 / 秒 逐段借位 ---------- */
+function diff(a, b){
+  var ms = b.getTime() - a.getTime();
+  if(ms < 0) return null;
+  var y = b.getFullYear()-a.getFullYear(),
+      mo = b.getMonth()-a.getMonth(),
+      d = b.getDate()-a.getDate(),
+      h = b.getHours()-a.getHours(),
+      mi = b.getMinutes()-a.getMinutes(),
+      s = b.getSeconds()-a.getSeconds();
+  if(s<0){ s+=60; mi--; }
+  if(mi<0){ mi+=60; h--; }
+  if(h<0){ h+=24; d--; }
+  if(d<0){
+    var prev = new Date(b.getFullYear(), b.getMonth(), 0);
+    d += prev.getDate(); mo--;
+  }
+  if(mo<0){ mo+=12; y--; }
+  return {y:y,mo:mo,d:d,h:h,mi:mi,s:s,ms:ms,
+          days:ms/86400000, seconds:ms/1000,
+          weeks:Math.floor(ms/604800000),
+          hours:Math.floor(ms/3600000),
+          minutes:Math.floor(ms/60000),
+          monthsApprox:ms/(365.2425/12*86400000)};
+}
+function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+
+/* ---------- 时节：公历固定 + 权威农历表 ---------- */
+var SOLAR = [
+  {name:"元旦", m:1, d:1},
+  {name:"劳动节", m:5, d:1},
+  {name:"国庆", m:10, d:1}
+];
+var LUNAR_TABLE = {
+  2026: {"春节":"2026-02-17","元宵":"2026-03-03","清明":"2026-04-05","端午节":"2026-06-19","中秋":"2026-09-25","重阳节":"2026-10-18"},
+  2027: {"春节":"2027-02-06","元宵":"2027-02-20","清明":"2027-04-05","端午节":"2027-06-09","中秋":"2027-09-15","重阳节":"2027-10-08"},
+  2028: {"春节":"2028-01-26","元宵":"2028-02-09","清明":"2028-04-04","端午节":"2028-05-28","中秋":"2028-10-03","重阳节":"2028-10-26"},
+  2029: {"重阳节":"2029-10-16"},
+  2030: {"重阳节":"2030-10-05"},
+  2031: {"重阳节":"2031-10-24"},
+  2032: {"重阳节":"2032-10-12"},
+  2033: {"重阳节":"2033-10-31"},
+  2034: {"重阳节":"2034-10-20"},
+  2035: {"重阳节":"2035-10-09"}
+};
+/* 春节只用于推算除夕，不出现在列表中 */
+var LUNAR_NAMES = ["元宵","清明","端午节","中秋","重阳节"];
+var MONTH_DAY = {"春节":["正月",1],"元宵":["正月",15],"端午节":["五月",5],"中秋":["八月",15],"重阳节":["九月",9]};
+var lunarFmt = null;
+function lunarParts(d){
+  if(!lunarFmt){
+    try{ lunarFmt = new Intl.DateTimeFormat("zh-CN-u-ca-chinese",{month:"long",day:"numeric"}); }
+    catch(e){ return null; }
+  }
+  var o = {};
+  try{
+    var ps = lunarFmt.formatToParts(d);
+    for(var i=0;i<ps.length;i++) o[ps[i].type] = ps[i].value;
+  }catch(e){ return null; }
+  return o;
+}
+/* 内置表之外的年份，用系统农历推算，界面会标注「推算」 */
+function lunarGuess(name, year){
+  var spec = MONTH_DAY[name];
+  if(!spec) return null;
+  var d = new Date(year,0,1,12);
+  for(var i=0;i<400;i++){
+    var p = lunarParts(d);
+    if(p && p.month===spec[0] && p.day===String(spec[1])) return iso(d);
+    d.setDate(d.getDate()+1);
+  }
+  return null;
+}
+function tableDate(name, year){
+  if(LUNAR_TABLE[year] && LUNAR_TABLE[year][name]) return LUNAR_TABLE[year][name];
+  if(name==="清明") return year+"-"+ (year===2027||year===2026 ? "04-05" : "04-04");
+  return null;
+}
+function isGuess(name, year){ return !LUNAR_TABLE[year] || !LUNAR_TABLE[year][name]; }
+
+function buildFestivals(now){
+  var out = [], y0 = now.getFullYear(), i, j, nm;
+  var dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  for(i=0;i<SOLAR.length;i++){
+    var f = SOLAR[i];
+    for(j=y0;j<=y0+3;j++){
+      var d = new Date(j, f.m-1, f.d);
+      if(d >= dayStart){ out.push({name:f.name,date:d,guess:false}); break; }
+    }
+  }
+  for(i=0;i<LUNAR_NAMES.length;i++){
+    nm = LUNAR_NAMES[i];
+    for(j=y0;j<=y0+3;j++){
+      var s = tableDate(nm,j) || lunarGuess(nm,j);
+      if(!s) continue;
+      var dd = pDate(s);
+      if(dd >= dayStart){ out.push({name:nm,date:dd,guess:isGuess(nm,j)}); break; }
+    }
+  }
+  /* 除夕 = 春节前一天 */
+  for(j=y0;j<=y0+3;j++){
+    var sp = tableDate("春节",j) || lunarGuess("春节",j);
+    if(!sp) continue;
+    var eve = new Date(pDate(sp).getTime()-86400000);
+    if(eve >= dayStart){ out.push({name:"除夕",date:eve,guess:isGuess("春节",j)}); break; }
+  }
+  out.sort(function(a,b){ return a.date-b.date; });
+  return out;
+}
+function buildAges(){
+  var b = birthDate(), a = [], i, n;
+  function at(age){
+    var d = new Date(b.getTime());
+    d.setFullYear(b.getFullYear()+age);
+    return d;
+  }
+  for(i=0;i<S.ages.length;i++){
+    n = +S.ages[i];
+    if(!n || n<1 || n>130) continue;
+    a.push({name:"距 "+n+" 岁",date:at(n),guess:false});
+  }
+  var custom = S.customAges || [];
+  for(i=0;i<custom.length;i++){
+    n = +custom[i].age;
+    if(!n || n<1 || n>130 || S.ages.indexOf(n)>=0) continue;
+    a.push({id:custom[i].id,name:"距 "+n+" 岁",date:at(n),guess:false,custom:true});
+  }
+  return a;
+}
+/* 纪念日按每年重复，只取月日 */
+function buildMemorials(now){
+  var ds = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return S.memorials.map(function(m){
+    var base = pDate(m.date), y = now.getFullYear();
+    var d = new Date(y, base.getMonth(), base.getDate());
+    if(d < ds) d = new Date(y+1, base.getMonth(), base.getDate());
+    return {id:m.id, name:m.name, date:d, guess:false, annual:true};
+  });
+}
+
+/* ---------- 卡片 ---------- */
+function markHTML(m, opts){
+  var now = new Date();
+  var df = diff(now, m.date);
+  var past = !df || (m.date.getTime() < now.getTime() && !sameDay(m.date,now));
+  var isToday = sameDay(m.date, now);
+  var pct = df ? Math.max(1.5, Math.min(100, df.ms / riverLength() * 100)) : 0;
+  var sub = "", main = "";
+  if(isToday){
+    main = '<span class="today">就在今日</span>';
+    sub = dot(m.date) + " · 此刻正站在这里";
+  }else if(past){
+    var since = diff(m.date, now);
+    main = '<span class="today" style="color:var(--ink-3)">已过</span>';
+    sub = since ? (since.y+" 年 "+since.mo+" 月 "+since.d+" 天") : "";
+  }else{
+    main = '<span class="mark-hai">还剩 </span><b class="js-days">'+fmt(Math.floor(df.days))+'</b><span>天</span>';
+    sub = subText(df, !!m.guess);
+  }
+  var detail = "";
+  if(df && !past && !isToday){
+    detail =
+      '<div class="detail-grid">'+
+        '<div><span>约合月</span><b>'+fmt(Math.round(df.monthsApprox))+'</b></div>'+
+        '<div><span>约合周</span><b>'+fmt(df.weeks)+'</b></div>'+
+        '<div><span>小时</span><b>'+fmt(df.hours)+'</b></div>'+
+        '<div><span>分钟</span><b>'+fmt(df.minutes)+'</b></div>'+
+        '<div><span>秒</span><b class="js-sec">'+fmt(Math.floor(df.seconds))+'</b></div>'+
+        '<div><span>占这条河</span><b>'+(df.ms/riverLength()*100).toFixed(1)+'%</b></div>'+
+      '</div>'+
+      '<div class="detail-note">这段时间里，大约还有 '+fmt(Math.floor(df.days/7))+' 个周末、'+fmt(Math.floor(df.days/29.53))+' 轮月圆。</div>';
+  }
+  return '<div class="mark'+(past?" past":"")+(m.annual?" mark-annual":"")+(opts&&opts.editing?" editing":"")+'"'+
+    ' data-ts="'+m.date.getTime()+'" data-guess="'+(m.guess?1:0)+'" data-key="'+m.name+'|'+m.date.getTime()+'"'+
+    ' data-id="'+(m.id||"")+'" data-mode="'+(opts&&opts.mode||"event")+'">'+
+    (opts&&opts.deletable ? '<button class="del-btn" data-del="'+(m.id||"")+'">×</button>' : "")+
+    '<div class="mark-top"><span class="mark-name">'+m.name+'</span><span class="mark-date">'+dot(m.date)+(m.guess?" ·推算":"")+'</span></div>'+
+    '<div class="mark-main">'+main+'</div>'+
+    '<div class="mark-sub'+(isToday||past?"":" js-sub")+'">'+sub+'</div>'+
+    '<div class="mark-line"><i style="width:'+pct.toFixed(2)+'%"></i></div>'+
+    (opts&&opts.deletable ? '<div class="mark-edit">'+(opts.editLabel||"改期 ›")+'</div>' : "")+
+    (opts&&opts.simple ? "" : '<div class="mark-detail">'+detail+'</div>')+
+  '</div>';
+}
+function subText(df, guess){
+  var p = [];
+  if(df.y) p.push(df.y+"年");
+  if(df.mo) p.push(df.mo+"个月");
+  p.push(df.d+"天");
+  if(df.h) p.push(df.h+"小时");
+  if(df.mi) p.push(df.mi+"分");
+  return p.join("")+(guess?" · 推算":"");
+}
+function bindCards(box){
+  var cards = box.querySelectorAll(".mark");
+  for(var i=0;i<cards.length;i++){
+    (function(card){
+      card.addEventListener("click", function(e){
+        var t = e.target;
+        if(t && t.getAttribute && t.getAttribute("data-del")!==null) return;
+        if(card.classList.contains("editing") && card.getAttribute("data-id")){
+          openSheet(card.getAttribute("data-id"), card.getAttribute("data-mode") || "event");
+          return;
+        }
+        card.classList.toggle("open");
+      });
+    })(cards[i]);
+  }
+}
+
+/* ---------- 四组刻度：默认各只留最近的一张，其余收在下面 ---------- */
+function renderGroup(key, boxId, foldId, arr, makeOpts){
+  var box = $(boxId), fold = $(foldId), now = new Date(), i, idx = -1;
+  /* 最近的＝下一个尚未抵达的日子；若都已过，取离此刻最近的一张 */
+  for(i=0;i<arr.length;i++){
+    if(arr[i].date > now && !sameDay(arr[i].date, now)){ idx = i; break; }
+  }
+  if(idx < 0) idx = arr.length-1;
+  var open = !!expanded[key];
+  var ed = !!editing[key];
+  var shown = open ? arr : (arr.length ? [arr[idx]] : []);
+  box.innerHTML = shown.length
+    ? shown.map(function(e){ return markHTML(e, makeOpts(e, ed)); }).join("")
+    : '<p class="empty">暂无刻度。</p>';
+  bindCards(box);
+  if(arr.length > 1){
+    fold.style.display = "block";
+    fold.innerHTML = open
+      ? '<span class="go">收起 ›</span>'
+      : '其余 <b>'+(arr.length-1)+'</b> 个 · <span class="go">展开 ›</span>';
+  }else{
+    fold.style.display = "none";
+    fold.innerHTML = "";
+  }
+}
+
+/* ---------- 长河 SVG：写意河道，断续波带，大片留白 ---------- */
+function rgeo(x){
+  var t = Math.max(0, Math.min(1, x/360));
+  var yc = 96 - 15*Math.sin(t*Math.PI*1.18) + 5*Math.sin(t*Math.PI*3.05 + .7);
+  var w  = 6 + 51*Math.pow(t, 1.15);
+  return {t:t, yc:yc, w:w, top:yc-w*.70, bot:yc+w*.98};
+}
+function drawRiver(now){
+  var W=360, H=184;
+  var p = Math.max(0, Math.min(1, (now - birthDate())/riverLength()));
+  var X = 14 + p*(W-28);
+  var root = getComputedStyle(document.documentElement);
+  function cv(n, fb){ return root.getPropertyValue(n).trim() || fb; }
+  var C = {
+    line:  cv("--line","rgba(34,48,45,.11)"),
+    jade:  cv("--jade","#3C6A60"),
+    jade2: cv("--jade-2","#7FA79E"),
+    ink3:  cv("--ink-3","#97A7A1"),
+    bg:    cv("--bg","#F4F5F1")
+  };
+  var top=[], bot=[], mid=[], x, g;
+  for(x=0; x<=W; x+=3){ g=rgeo(x); top.push([x,g.top]); bot.push([x,g.bot]); mid.push([x,g.yc]); }
+  function pathOf(pts, rev){
+    var s="", k, q, idx;
+    for(k=0;k<pts.length;k++){
+      idx = rev ? pts.length-1-k : k;
+      q = pts[idx];
+      s += (k===0?"M":"L")+q[0]+" "+q[1].toFixed(2);
+    }
+    return s;
+  }
+  function broken(pts, segs){
+    var s="", j, n=pts.length-1, a, b, k, q;
+    for(j=0;j<segs.length;j++){
+      a=Math.floor(segs[j][0]*n); b=Math.floor(segs[j][1]*n);
+      for(k=a;k<=b;k++){ q=pts[k]; s += (k===a?"M":"L")+q[0]+" "+q[1].toFixed(2)+" "; }
+    }
+    return s;
+  }
+  var water = pathOf(top,false) + " " + pathOf(bot,true).replace(/^M/,"L") + " Z";
+  var center = pathOf(mid,false);
+  var shoreTop = broken(top, [[0,.20],[.26,.54],[.60,.85],[.90,1]]);
+  var shoreBot = broken(bot, [[.02,.32],[.38,.70],[.76,1]]);
+  var s = "";
+
+  s += '<defs>';
+  s += '<linearGradient id="waterV" x1="0" y1="0" x2="0" y2="1">'+
+       '<stop offset="0%" stop-color="'+C.jade2+'" stop-opacity=".02"/>'+
+       '<stop offset="56%" stop-color="'+C.jade2+'" stop-opacity=".09"/>'+
+       '<stop offset="100%" stop-color="'+C.jade+'" stop-opacity=".18"/></linearGradient>';
+  s += '<linearGradient id="flowH" x1="0" y1="0" x2="1" y2="0">'+
+       '<stop offset="0%" stop-color="'+C.jade2+'" stop-opacity=".02"/>'+
+       '<stop offset="100%" stop-color="'+C.jade+'" stop-opacity=".20"/></linearGradient>';
+  s += '<linearGradient id="fadeR" x1="0" y1="0" x2="1" y2="0">'+
+       '<stop offset="0%" stop-color="#ffffff" stop-opacity=".35"/>'+
+       '<stop offset="8%" stop-color="#ffffff" stop-opacity="1"/>'+
+       '<stop offset="84%" stop-color="#ffffff" stop-opacity="1"/>'+
+       '<stop offset="100%" stop-color="#ffffff" stop-opacity=".28"/></linearGradient>';
+  s += '<mask id="fadeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="'+W+'" height="'+H+'">'+
+       '<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="url(#fadeR)"/></mask>';
+  s += '<clipPath id="riverClip"><path d="'+water+'"/></clipPath>';
+  s += '<clipPath id="flowClip"><rect x="0" y="0" width="'+X.toFixed(1)+'" height="'+H+'"/></clipPath>';
+  s += '</defs>';
+
+  /* 上游收成一点，下游开阔；右端柔淡出画 */
+  s += '<g mask="url(#fadeMask)">';
+  s += '<path d="'+water+'" fill="url(#waterV)"/>';
+  s += '<g clip-path="url(#flowClip)"><path d="'+water+'" fill="'+C.jade2+'" opacity=".12"/><path d="'+water+'" fill="url(#flowH)"/></g>';
+
+  /* 波带：一组组断续的弧，组与组之间大面积留白 */
+  s += '<g clip-path="url(#riverClip)" fill="none" stroke-linecap="round">';
+  var bands = [
+    [34, .34, 18, 2, .13], [78, .58, 22, 2, .16], [108,-.30, 20, 2, .12],
+    [138, .46, 26, 3, .19], [172,-.52, 24, 2, .16], [188, .20, 32, 3, .23],
+    [222, .62, 28, 2, .21], [240,-.26, 30, 3, .22], [268, .42, 36, 3, .27],
+    [288,-.58, 30, 2, .23], [306, .14, 40, 3, .30], [322, .66, 32, 2, .27]
+  ];
+  var bi, j, bd, sx, L, kk, g0, g1, y0, y1, arc, op;
+  for(bi=0; bi<bands.length; bi++){
+    bd = bands[bi];
+    for(j=0; j<bd[3]; j++){
+      sx = bd[0] + j*3.5;
+      L  = bd[2]*(1-0.13*j);
+      kk = bd[1] + j*0.075;
+      g0 = rgeo(sx); g1 = rgeo(sx+L);
+      y0 = g0.yc + kk*g0.w*.82;
+      y1 = g1.yc + kk*g1.w*.82;
+      arc = 1.5 + 2.6*(sx/W) + j*0.4;
+      op  = bd[4]*(1-0.18*j);
+      s += '<path d="M'+sx.toFixed(1)+' '+y0.toFixed(2)+
+           ' C'+(sx+L*.3).toFixed(1)+' '+(y0-arc).toFixed(2)+
+           ' '+(sx+L*.72).toFixed(1)+' '+(y1-arc*.72).toFixed(2)+
+           ' '+(sx+L).toFixed(1)+' '+y1.toFixed(2)+
+           '" stroke="'+C.jade+'" stroke-width="'+(0.65+0.45*sx/W).toFixed(2)+'" opacity="'+op.toFixed(3)+'"/>';
+      if(j===0){
+        s += '<path d="M'+(sx+L-7).toFixed(1)+' '+(y1-1).toFixed(2)+
+             ' q4 -2.6 7 -2.2" stroke="'+C.jade2+'" stroke-width=".7" opacity="'+(op*.8).toFixed(3)+'"/>';
+      }
+    }
+  }
+  /* 两处回旋、几笔波光 */
+  var swirls = [[154,.10],[292,-.16]], si, sg, sy;
+  for(si=0; si<swirls.length; si++){
+    sg = rgeo(swirls[si][0]); sy = sg.yc + swirls[si][1]*sg.w;
+    s += '<path d="M'+(swirls[si][0]-9)+' '+sy.toFixed(1)+' q9 -4 18 0 M'+(swirls[si][0]-5)+' '+sy.toFixed(1)+' q5 2.6 10 0" stroke="'+C.jade2+'" stroke-width=".7" opacity=".22"/>';
+  }
+  var glints = [[212,-.10,8],[248,.30,10],[300,.50,12],[332,-.35,9]], gi, gg2, gy;
+  for(gi=0; gi<glints.length; gi++){
+    gg2 = rgeo(glints[gi][0]); gy = gg2.yc + glints[gi][1]*gg2.w;
+    s += '<path d="M'+glints[gi][0]+' '+gy.toFixed(1)+' q'+(glints[gi][2]/2)+' -2 '+glints[gi][2]+' 0" stroke="'+C.jade2+'" stroke-width=".7" opacity=".24"/>';
+  }
+  /* 一道天光：留白，把笔触断开 */
+  s += '<path d="'+center+'" stroke="'+C.bg+'" stroke-width="7" opacity=".38" stroke-linecap="round"/>';
+  s += '</g>';
+
+  /* 岸线也是断续的笔触，不是两根实线 */
+  s += '<path d="'+shoreTop+'" fill="none" stroke="'+C.jade2+'" stroke-width=".9" opacity=".34"/>';
+  s += '<path d="'+shoreBot+'" fill="none" stroke="'+C.jade+'" stroke-width="1" opacity=".26"/>';
+  s += '<g stroke="'+C.ink3+'" stroke-width=".7" opacity=".22" fill="none">';
+  var banks = [[24,1],[58,1],[112,-1],[282,1],[316,1],[340,-1]], bx, bg2, by;
+  for(bi=0; bi<banks.length; bi++){
+    bx = banks[bi][0]; bg2 = rgeo(bx);
+    by = banks[bi][1]>0 ? bg2.bot + 5 + (bi%2)*3 : bg2.top - 5;
+    s += '<path d="M'+(bx-9)+' '+by.toFixed(1)+' q9 -1.6 18 0"/>';
+  }
+  s += '</g>';
+  s += '</g>';
+
+  /* 时间的尺：十年一笔，长短浓淡错落，是画上的短皴，不是直尺的齐整 */
+  var yA = birthDate().getFullYear(), yB = horizonDate().getFullYear(), span = Math.max(1, yB-yA);
+  var yy2, xx, ti=0, major, len, tilt;
+  s += '<path d="M14 174 L76 174 M92 174 L166 174 M184 174 L258 174 M278 174 L346 174" fill="none" stroke="'+C.ink3+'" stroke-width=".8" opacity=".20"/>';
+  s += '<g stroke-linecap="round">';
+  for(yy2=yA; yy2<=yB; yy2+=10){
+    xx = 14 + (yy2-yA)/span*332;
+    major = ((yy2-yA)%20===0);
+    len  = major ? 10.5 + (ti%3)*1.4 : 5.5 + (ti%4)*1.2;
+    tilt = ((ti%3)-1)*1.8;
+    s += '<path d="M'+xx.toFixed(1)+' 174 Q'+(xx+tilt*.25).toFixed(1)+' '+(174-len*.58).toFixed(1)+
+         ' '+(xx+tilt).toFixed(1)+' '+(174-len).toFixed(1)+
+         '" fill="none" stroke="'+(major?C.jade:C.jade2)+'" stroke-width="'+(major?1.2:.95)+'" opacity="'+(major?.62:.44)+'"/>';
+    if(major) s += '<circle cx="'+xx.toFixed(1)+'" cy="174" r="1.2" fill="'+C.jade+'" opacity=".55"/>';
+    ti++;
+  }
+  s += '</g>';
+
+  /* 河上题字：两端各一，前路题在左下留白，一笔顺流指出去 */
+  s += '<text class="rl-cap" x="8" y="22">归去来兮</text>';
+  s += '<text class="rl-cap" x="352" y="22" text-anchor="end">归处</text>';
+  s += '<text class="rl-dir" x="10" y="140">前路</text>';
+  s += '<path d="M44 139 C100 146 168 146 234 140 M229 137.4 L234 140 L230 143.4" stroke="'+C.ink3+'" stroke-width=".85" fill="none" opacity=".6"/>';
+
+  /* 此刻：透视下的扁椭圆涟漪 */
+  var gc = rgeo(X);
+  s += '<line x1="'+X.toFixed(1)+'" y1="'+(gc.yc+9).toFixed(1)+'" x2="'+X.toFixed(1)+'" y2="'+(gc.bot+2).toFixed(1)+'" stroke="'+C.jade2+'" stroke-width=".8" opacity=".32"/>';
+  s += '<g transform="translate('+X.toFixed(1)+','+gc.yc.toFixed(1)+')">';
+  s += '<ellipse class="ripple" cx="0" cy="0" rx="8" ry="2.8" fill="none" stroke="'+C.jade+'" stroke-width="1"/>';
+  s += '<ellipse class="ripple" cx="0" cy="0" rx="8" ry="2.8" fill="none" stroke="'+C.jade+'" stroke-width="1" style="animation-delay:1.9s"/>';
+  s += '<ellipse cx="0" cy="0" rx="15" ry="5.6" fill="none" stroke="'+C.jade2+'" stroke-width=".9" opacity=".85"/>';
+  s += '<ellipse cx="0" cy="0" rx="7.5" ry="2.9" fill="'+C.bg+'" stroke="'+C.jade2+'" stroke-width=".8"/>';
+  s += '<circle cx="0" cy="0" r="2.6" fill="'+C.jade+'"/>';
+  s += '</g>';
+  var pb = gc.bot + 4;
+  s += '<path d="M'+(X-3).toFixed(1)+' '+pb.toFixed(1)+' L'+(X+3).toFixed(1)+' '+pb.toFixed(1)+' L'+X.toFixed(1)+' '+(pb+5).toFixed(1)+' Z" fill="'+C.jade+'" opacity=".55"/>';
+
+  $("riverSvg").innerHTML = s;
+}
+
+/* ---------- 渲染 ---------- */
+function render(){
+  document.documentElement.setAttribute("data-theme", S.night ? "night" : "day");
+  if(window.ChangheBridge && ChangheBridge.onTheme) ChangheBridge.onTheme(!!S.night);
+  var openKeys = {}, prevOpen = document.querySelectorAll(".mark.open"), ri;
+  for(ri=0;ri<prevOpen.length;ri++) openKeys[prevOpen[ri].getAttribute("data-key")||""]=1;
+  var now = new Date(), b = birthDate(), end = horizonDate();
+  var lived = diff(b, now), ahead = diff(now, end);
+  if(!lived) lived = {y:0,mo:0,d:0,h:0,mi:0,s:0,ms:0,days:0,seconds:0};
+  var pct = Math.max(0,Math.min(100,(now-b)/(end-b)*100));
+
+  $("heroY").textContent = lived.y;
+  $("heroFrom").textContent = "自 "+dot(b);
+  var md = '零 '; if(lived.mo) md += '<b class="js-md" data-k="1">'+lived.mo+'</b> 个月 '; if(lived.d) md += '<b class="js-md" data-k="2">'+lived.d+'</b> 天'; $("heroMD").innerHTML = md;
+  $("heroTime").innerHTML = '<span class="js-clock">'+pad(lived.h)+':'+pad(lived.mi)+(S.showSeconds?':'+pad(lived.s):"")+'</span>';
+
+  drawRiver(now);
+  showQuote();
+
+  if(ahead){
+    $("aheadClock").innerHTML =
+      '<span>'+ahead.y+'<u>个年头</u></span><span class="zero">零</span><span>'+ahead.mo+'<u>个月</u></span><span>'+ahead.d+'<u>天</u></span>';
+    $("aheadNote").textContent = "合 "+fmt(Math.floor(ahead.days))+" 天 · "+fmt(Math.floor(ahead.hours))+" 小时 · 已流过 "+pct.toFixed(1)+"%";
+  }else{
+    $("aheadClock").innerHTML = '<span style="font-family:var(--serif);font-size:22px">河还在继续</span>';
+    $("aheadNote").textContent = "你已走过设定的年岁，长度随时可以在「我的」里改。";
+  }
+
+  var yStart = new Date(now.getFullYear(),0,1), yEnd = new Date(now.getFullYear()+1,0,1);
+  var mStart = new Date(now.getFullYear(),now.getMonth(),1), mEnd = new Date(now.getFullYear(),now.getMonth()+1,1);
+  var dStart = new Date(now.getFullYear(),now.getMonth(),now.getDate()), dEnd = new Date(dStart.getTime()+86400000);
+  var rows = [
+    ["今年",(now-yStart)/(yEnd-yStart)],
+    ["本月",(now-mStart)/(mEnd-mStart)],
+    ["今日",(now-dStart)/(dEnd-dStart)]
+  ];
+  var ph = "";
+  for(var i=0;i<rows.length;i++){
+    ph += '<div class="prog"><span>'+rows[i][0]+'</span><div class="bar"><i style="width:'+(rows[i][1]*100).toFixed(2)+'%"></i></div><em>'+(rows[i][1]*100).toFixed(1)+'%</em></div>';
+  }
+  $("progressRow").innerHTML = ph;
+
+  /* 四组刻度：一屏各见其一 */
+  var evs = S.events.map(function(e){ return {id:e.id,name:e.name,date:pDate(e.date),guess:false}; });
+  evs.sort(function(a,c){ return a.date-c.date; });
+  renderGroup("event","eventList","foldEvent",evs,function(e,ed){
+    return {deletable:true,editing:ed,mode:"event"};
+  });
+
+  var ages = buildAges();
+  ages.sort(function(a,c){ return a.date-c.date; });
+  renderGroup("age","ageList","foldAge",ages,function(e,ed){
+    return e.custom ? {deletable:true,editing:ed,mode:"age",editLabel:"改岁数 ›"} : {};
+  });
+
+  var fes = buildFestivals(now);
+  renderGroup("festival","festivalList","foldFestival",fes,function(){ return {}; });
+
+  var mems = buildMemorials(now);
+  mems.sort(function(a,c){ return a.date-c.date; });
+  renderGroup("memorial","memorialList","foldMemorial",mems,function(e,ed){
+    return {deletable:true,editing:ed,mode:"memorial"};
+  });
+  showVerse();
+
+  /* 最近的刻度 */
+  var all = evs.concat(ages, fes, mems).filter(function(m){ return m.date > now && !sameDay(m.date,now); });
+  all.sort(function(a,c){ return a.date-c.date; });
+  nearestTs = all.length ? all[0].date.getTime() : 0;
+  nearestName = all.length ? all[0].name : "";
+  $("nearest").innerHTML = all.length ? markHTML(all[0],{simple:true}) : '<p class="empty">暂时没有前方的刻度。</p>';
+  bindCards($("nearest"));
+
+  /* 小组件：与桌面实际渲染一致 */
+  fillDemo();
+
+  /* 设置 */
+  $("setBirth").value = S.birth;
+  $("setHorizon").value = S.horizon;
+  $("setAges").value = S.ages.join(",");
+  $("setSeconds").classList.toggle("on", !!S.showSeconds);
+  $("setNight").classList.toggle("on", !!S.night);
+  $("notice").style.display = S.customized ? "none" : "flex";
+  $("themeBtn").textContent = S.night ? "昼" : "夜";
+  var allMarks = document.querySelectorAll(".mark");
+  for(ri=0;ri<allMarks.length;ri++){
+    if(openKeys[allMarks[ri].getAttribute("data-key")||""]) allMarks[ri].classList.add("open");
+  }
+  updateLive();
+}
+
+/* ---------- 秒级刷新：只改数字，不重建结构 ---------- */
+function updateLive(){
+  var now = new Date(), b = birthDate(), end = horizonDate();
+  var lived = diff(b, now) || {y:0,mo:0,d:0,h:0,mi:0,s:0,ms:0,days:0,seconds:0};
+  var ahead = diff(now, end);
+  var pct = Math.max(0, Math.min(100, (now-b)/(end-b)*100));
+  var i;
+
+  $("heroY").textContent = lived.y;
+  $("heroPct").textContent = pct.toFixed(1)+"%";
+  $("heroBar").style.width = pct.toFixed(1)+"%";
+  $("heroNow").style.left = pct.toFixed(1)+"%";
+  $("heroNowLabel").style.left = Math.max(18,Math.min(82,pct)).toFixed(1)+"%";
+  $("heroDay").textContent = fmt(Math.floor(lived.days));
+  var mds = $("heroMD").querySelectorAll(".js-md");
+  if(mds[0]) mds[0].textContent = lived.mo;
+  if(mds[1]) mds[1].textContent = lived.d;
+  var clk = $("heroTime").querySelector(".js-clock");
+  if(clk) clk.textContent = pad(lived.h)+":"+pad(lived.mi)+(S.showSeconds?":"+pad(lived.s):"");
+
+  var as = $("aheadClock").querySelectorAll("span");
+  if(ahead && as.length===3){
+    var av = [ahead.y,ahead.mo,ahead.d];
+    for(i=0;i<3;i++) if(as[i].firstChild) as[i].firstChild.nodeValue = av[i];
+    $("aheadNote").textContent = "合 "+fmt(Math.floor(ahead.days))+" 天 · "+fmt(Math.floor(ahead.hours))+" 小时 · 已流过 "+pct.toFixed(1)+"%";
+  }
+
+  var yStart = new Date(now.getFullYear(),0,1), yEnd = new Date(now.getFullYear()+1,0,1);
+  var mStart = new Date(now.getFullYear(),now.getMonth(),1), mEnd = new Date(now.getFullYear(),now.getMonth()+1,1);
+  var dStart = new Date(now.getFullYear(),now.getMonth(),now.getDate()), dEnd = new Date(dStart.getTime()+86400000);
+  var rows = [
+    (now-yStart)/(yEnd-yStart),
+    (now-mStart)/(mEnd-mStart),
+    (now-dStart)/(dEnd-dStart)
+  ];
+  var bars = $("progressRow").querySelectorAll(".bar i");
+  var ems  = $("progressRow").querySelectorAll("em");
+  for(i=0;i<rows.length && i<bars.length;i++){
+    bars[i].style.width = (rows[i]*100).toFixed(2)+"%";
+    if(ems[i]) ems[i].textContent = (rows[i]*100).toFixed(1)+"%";
+  }
+
+  var cards = document.querySelectorAll(".mark[data-ts]");
+  for(i=0;i<cards.length;i++){
+    var c = cards[i], ts = +c.getAttribute("data-ts");
+    if(!ts) continue;
+    var d2 = diff(now, new Date(ts));
+    if(!d2) continue;
+    var bd = c.querySelector(".js-days");  if(bd)  bd.textContent  = fmt(Math.floor(d2.days));
+    var bs = c.querySelector(".js-sub");   if(bs)  bs.textContent  = subText(d2, c.getAttribute("data-guess")==="1");
+    var bc = c.querySelector(".js-sec");   if(bc)  bc.textContent  = fmt(Math.floor(d2.seconds));
+  }
+
+  fillDemo();
+}
+/* 小组件演示：内容、尺寸与桌面实际渲染对齐（2×2 与 4×2 同内容） */
+function fillDemo(){
+  var now=new Date(), b=birthDate(), end=horizonDate();
+  var lived=diff(b,now)||{y:0,mo:0,d:0,days:0};
+  var ahead=diff(now,end);
+  var livedDays=fmt(Math.floor(lived.days));
+  var aheadText;
+  if(!ahead) aheadText="前方尚有 · 且看此刻";
+  else if(ahead.y>0) aheadText="前方尚有 "+ahead.y+" 年";
+  else aheadText="前方尚有 "+Math.max(1,ahead.mo)+" 月";
+  var markName = nearestName ? ("最近 · "+nearestName) : "最近 · 未设置";
+  var markDays = "—";
+  if(nearestTs){
+    var days=Math.max(0,Math.floor((nearestTs-now.getTime())/86400000));
+    markDays = (days===0 ? "就在今日" : days+" 天");
+  }
+  $("wSmAhead").textContent=aheadText; $("wWideAhead").textContent=aheadText;
+  $("wSmNum").textContent=lived.y;      $("wWideNum").textContent=lived.y;
+  var wRest = "零 "; if(lived.mo) wRest += lived.mo+" 个月 "; if(lived.d) wRest += lived.d+" 天"; $("wWideRest").textContent = wRest;
+  $("wSmMark").textContent=markName;    $("wWideMark").textContent=markName;
+  $("wSmDays").textContent=markDays;    $("wWideDays").textContent=markDays;
+}
+
+function tick(){
+  var d = new Date(), k = d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+  if(dayKey && k !== dayKey){ dayKey = k; render(); return; }
+  dayKey = k;
+  updateLive();
+}
+
+/* ---------- 交互 ---------- */
+function toast(msg){
+  var t=$("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(function(){ t.classList.remove("show"); },1900);
+}
+function go(page){
+  var btns = document.querySelectorAll(".tabbar button");
+  for(var i=0;i<btns.length;i++) btns[i].classList.toggle("on", btns[i].getAttribute("data-page")===page);
+  var ps = document.querySelectorAll(".page");
+  for(i=0;i<ps.length;i++) ps[i].classList.toggle("active", ps[i].id === "p-"+page);
+  $("main").scrollTop = 0;
+  try{ history.replaceState(null,"","#"+page); }catch(e){}
+}
+function openSheet(id, mode){
+  sheetMode = mode || "event";
+  sheetEditId = id || null;
+  var isAge = sheetMode==="age";
+  var list = isAge ? (S.customAges||[]) : (sheetMode==="memorial" ? S.memorials : S.events);
+  var item = null, i;
+  if(sheetEditId){
+    for(i=0;i<list.length;i++) if(list[i].id===sheetEditId) item=list[i];
+  }
+  $("sheetTitle").textContent = isAge
+    ? (item ? "改一改岁数" : "添加一个年岁")
+    : (item ? "改一改日子" : (sheetMode==="memorial" ? "添加一个纪念日" : "添加一个刻度"));
+  $("evNameLabel").textContent = isAge ? "岁数" : "名称";
+  $("evNameHint").textContent  = isAge ? "按出生日期推算，例如 27 或 35" : "想看见的那件事";
+  $("evName").placeholder      = isAge ? "例如：27" : "例如：研究生毕业";
+  $("evName").value = isAge ? (item ? String(item.age) : "") : (item ? item.name : "");
+  $("evDateField").style.display = isAge ? "none" : "";
+  if(!isAge){
+    var init;
+    if(item){ init = pDate(item.date); }
+    else { var t=new Date(); t.setFullYear(t.getFullYear()+1); init = t; }
+    dpBuild(init);
+  }
+  $("evDateHint").textContent = sheetMode==="memorial" ? "按每年重复，只需要月日；年份不影响" : "它将在哪一天抵达";
+  $("evSave").textContent = item ? "改好" : "记下";
+  $("sheetBg").classList.add("show");
+}
+function bindDelete(box, key){
+  box.addEventListener("click", function(e){
+    var id = e.target.getAttribute && e.target.getAttribute("data-del");
+    if(!id) return;
+    e.stopPropagation();
+    S[key] = S[key].filter(function(x){ return x.id!==id; });
+    save(); render(); toast("已移除");
+  });
+}
+function toggleEdit(key){
+  editing[key] = !editing[key];
+  var btn = key==="event" ? $("editBtn") : key==="age" ? $("ageEditBtn") : $("memEditBtn");
+  btn.textContent = editing[key] ? "完成" : "编辑";
+  render();
+}
+
+(function(){
+  var btns = document.querySelectorAll(".tabbar button");
+  for(var i=0;i<btns.length;i++){
+    (function(b){ b.addEventListener("click",function(){ go(b.getAttribute("data-page")); }); })(btns[i]);
+  }
+})();
+$("themeBtn").addEventListener("click",function(){ S.night=!S.night; save(); render(); });
+$("quote").addEventListener("click",function(){
+  quoteIdx=(quoteIdx+1)%QUOTES.length;
+  showQuote();
+});
+$("verse").addEventListener("click",function(){
+  verseIdx=(verseIdx+1)%QUOTES.length;
+  showVerse();
+});
+(function(){
+  var keys = {foldEvent:"event", foldAge:"age", foldFestival:"festival", foldMemorial:"memorial"}, id;
+  for(id in keys){
+    if(!Object.prototype.hasOwnProperty.call(keys,id)) continue;
+    (function(fid, key){
+      $(fid).addEventListener("click",function(){
+        var wasOpen = expanded[key];
+        expanded[key] = !wasOpen;
+        render();
+        /* 收起时若这一行被顶出视口，把它带回眼前 */
+        if(wasOpen){
+          var r = $(fid).getBoundingClientRect(), mr = $("main").getBoundingClientRect();
+          if(r.top > mr.bottom - 70){
+            $("main").scrollTop += r.top - (mr.top + mr.height - 90);
+          }
+        }
+      });
+    })(id, keys[id]);
+  }
+})();
+$("noticeBtn").addEventListener("click",function(){ go("self"); });
+$("toMarks").addEventListener("click",function(){ go("marks"); });
+
+$("setBirth").addEventListener("change",function(){
+  if(!this.value) return;
+  S.birth=this.value; S.customized=true;
+  for(var i=0;i<S.memorials.length;i++){
+    if(S.memorials[i].name==="自己的生日"){ S.memorials[i].date=this.value; break; }
+  }
+  save(); render(); toast("出生日期已记下");
+});
+$("setHorizon").addEventListener("change",function(){
+  var v=Math.max(1,Math.min(130,parseInt(this.value,10)||80));
+  S.horizon=v; S.customized=true; save(); render();
+});
+$("setAges").addEventListener("change",function(){
+  var arr=this.value.split(/[,，\s]+/).map(function(x){ return parseInt(x,10); }).filter(function(x){ return x>0&&x<=130; });
+  S.ages=arr.slice(0,10); S.customized=true; save(); render();
+});
+$("setSeconds").addEventListener("click",function(){ S.showSeconds=!S.showSeconds; save(); render(); });
+$("setNight").addEventListener("click",function(){ S.night=!S.night; save(); render(); });
+$("resetBtn").addEventListener("click",function(){
+  if(!window.confirm("恢复示例数据？你添加的节点与纪念日会被清掉。")) return;
+  S=JSON.parse(JSON.stringify(DEFAULT)); save(); render(); go("river"); toast("已恢复示例");
+});
+
+$("addBtn").addEventListener("click",function(){ openSheet(null,"event"); });
+$("memAddBtn").addEventListener("click",function(){ openSheet(null,"memorial"); });
+$("ageAddBtn").addEventListener("click",function(){ openSheet(null,"age"); });
+$("editBtn").addEventListener("click",function(){ toggleEdit("event"); });
+$("memEditBtn").addEventListener("click",function(){ toggleEdit("memorial"); });
+$("ageEditBtn").addEventListener("click",function(){ toggleEdit("age"); });
+$("evCancel").addEventListener("click",function(){ $("sheetBg").classList.remove("show"); });
+$("sheetBg").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });
+$("evSave").addEventListener("click",function(){
+  var n=$("evName").value.trim(), d=dpState.y+"-"+pad(dpState.m)+"-"+pad(dpState.d), i, list, age, dup;
+  if(sheetMode==="age"){
+    age = parseInt(n,10);
+    if(!age || age<1 || age>130){ toast("写 1 到 130 之间的岁数"); return; }
+    if(S.ages.indexOf(age)>=0){ toast("这个岁数已经在默认刻度里"); return; }
+    list = S.customAges || (S.customAges=[]);
+    dup = false;
+    for(i=0;i<list.length;i++) if(list[i].age===age && list[i].id!==sheetEditId) dup=true;
+    if(dup){ toast("这个岁数已经添过了"); return; }
+    if(sheetEditId){
+      for(i=0;i<list.length;i++) if(list[i].id===sheetEditId){ list[i].age=age; break; }
+    }else{
+      list.push({id:"a"+Date.now(), age:age});
+    }
+    S.customized=true; save();
+    $("sheetBg").classList.remove("show");
+    render();
+    toast(sheetEditId ? "已改好" : "已添上");
+    return;
+  }
+  if(!n){ toast("先给它一个名字"); return; }
+  if(!d){ toast("选一个日期"); return; }
+  list = (sheetMode==="memorial") ? S.memorials : S.events;
+  if(sheetEditId){
+    for(i=0;i<list.length;i++) if(list[i].id===sheetEditId){ list[i].name=n; list[i].date=d; break; }
+  }else{
+    list.push({id:(sheetMode==="memorial"?"m":"e")+Date.now(), name:n, date:d});
+  }
+  S.customized=true; save();
+  $("sheetBg").classList.remove("show");
+  render();
+  toast(sheetEditId ? "已改期" : "已记下");
+});
+function requestWidget(size){
+  var note=$("addWNote");
+  if(window.ChangheBridge && typeof window.ChangheBridge.requestWidget==="function"){
+    window.ChangheBridge.requestWidget(size);
+    note.textContent = "已交给系统，确认即可落到桌面";
+  }else{
+    note.textContent = "当前是预览页面：请在手机桌面长按空白处，从「小组件」里选择「岁月长河」";
+  }
+}
+$("addWSmall").addEventListener("click",function(){ requestWidget("small"); });
+$("addWWide").addEventListener("click",function(){ requestWidget("wide"); });
+
+bindDelete($("eventList"),"events");
+bindDelete($("memorialList"),"memorials");
+bindDelete($("ageList"),"customAges");
+
+/* ---------- 页内日期滚轮：替代系统日期选择框，定位统一 ---------- */
+var dpState = {y:2002, m:6, d:15, _my:0};
+function dpPad(){ return '<div class="dp-pad"></div>'; }
+function dpDaysInMonth(y,m){ return new Date(y, m, 0).getDate(); }
+function dpColEl(u){ return u==="y"?$("dpY"):u==="m"?$("dpM"):$("dpD"); }
+function dpBuild(init){
+  var Y0=1940, Y1=new Date().getFullYear()+120;
+  var yc=$("dpY"); yc.innerHTML=dpPad();
+  for(var y=Y0;y<=Y1;y++) yc.innerHTML+='<div class="dp-i" data-v="'+y+'">'+y+'</div>';
+  yc.innerHTML+=dpPad();
+  var mc=$("dpM"); mc.innerHTML=dpPad();
+  for(var mo=1;mo<=12;mo++) mc.innerHTML+='<div class="dp-i" data-v="'+mo+'">'+pad(mo)+'</div>';
+  mc.innerHTML+=dpPad();
+  dpState.y = init.getFullYear();
+  dpState.m = init.getMonth()+1;
+  dpState.d = Math.min(init.getDate(), dpDaysInMonth(dpState.y, dpState.m));
+  dpState._my = dpState.y*12 + dpState.m;
+  dpBuildDays();
+  /* 等布局就绪再定位，避免 scrollTop 未生效而被 dpRead 读回首项 */
+  requestAnimationFrame(function(){
+    dpScrollTo("y", dpState.y); dpScrollTo("m", dpState.m); dpScrollTo("d", dpState.d);
+    dpPaint();
+  });
+}
+function dpBuildDays(){
+  var dc=$("dpD"); dc.innerHTML=dpPad();
+  var n=dpDaysInMonth(dpState.y, dpState.m);
+  for(var d=1;d<=n;d++) dc.innerHTML+='<div class="dp-i" data-v="'+d+'">'+pad(d)+'</div>';
+  dc.innerHTML+=dpPad();
+}
+function dpScrollTo(u, v){
+  var col=dpColEl(u), items=col.querySelectorAll(".dp-i"), i;
+  for(i=0;i<items.length;i++){
+    if(+items[i].getAttribute("data-v")===v){ col.scrollTop = items[i].offsetTop - 54; break; }
+  }
+}
+function dpRead(u){
+  var col=dpColEl(u), idx=Math.round(col.scrollTop/30), items=col.querySelectorAll(".dp-i"), it=items[idx];
+  if(it) dpState[u]=+it.getAttribute("data-v");
+}
+function dpHighlight(u){
+  var col=dpColEl(u), items=col.querySelectorAll(".dp-i"), i;
+  for(i=0;i<items.length;i++) items[i].classList.toggle("sel", +items[i].getAttribute("data-v")===dpState[u]);
+}
+function dpPaint(){
+  $("dpDisplay").textContent = dpState.y+" 年 "+pad(dpState.m)+" 月 "+pad(dpState.d)+" 日";
+  dpHighlight("y"); dpHighlight("m"); dpHighlight("d");
+}
+function dpRefresh(){
+  dpRead("y"); dpRead("m"); dpRead("d");
+  var my = dpState.y*12 + dpState.m;
+  if(my !== dpState._my){ dpState._my = my; dpBuildDays(); }
+  var maxD = dpDaysInMonth(dpState.y, dpState.m);
+  if(dpState.d > maxD) dpState.d = maxD;
+  dpScrollTo("d", dpState.d);
+  dpPaint();
+}
+function dpOnScroll(){ clearTimeout(dpOnScroll._t); dpOnScroll._t=setTimeout(dpRefresh, 90); }
+$("dpY").addEventListener("scroll", dpOnScroll);
+$("dpM").addEventListener("scroll", dpOnScroll);
+$("dpD").addEventListener("scroll", dpOnScroll);
+
+render();
+var hash = location.hash.replace("#","");
+if(["river","marks","widget","self"].indexOf(hash)>=0) go(hash);
+var initDay = new Date();
+dayKey = initDay.getFullYear()+"-"+initDay.getMonth()+"-"+initDay.getDate();
+setInterval(tick, 1000);
+document.addEventListener("visibilitychange",function(){ if(!document.hidden) render(); });
+})();
+</script>
+</body>
+</html>

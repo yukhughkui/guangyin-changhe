@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#F4F5F1</color>
+    <color name="widget_bg">#FCFCFA</color>
+    <color name="widget_line">#E4EBE7</color>
+    <color name="jade">#3C6A60</color>
+    <color name="jade_soft">#7FA79E</color>
+    <color name="ink">#22302D</color>
+    <color name="ink2">#5C6C67</color>
+    <color name="ink3">#97A7A1</color>
+</resources>

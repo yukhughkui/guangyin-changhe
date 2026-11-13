@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace 'cloud.yundu.changhe'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'cloud.yundu.changhe'
+        minSdk 26
+        targetSdk 34
+        versionCode 7
+        versionName '1.6'
+    }
+
+    signingConfigs {
+        release {
+            // 签名信息从本地 local.properties 读取（不入库，见 local.properties.example）
+            def props = new Properties()
+            def pf = rootProject.file('local.properties')
+            if (pf.exists()) props.load(pf.newDataInputStream())
+            storeFile file(props.getProperty('changhe.storeFile', '../changhe.keystore'))
+            storePassword props.getProperty('changhe.storePassword', '')
+            keyAlias props.getProperty('changhe.keyAlias', 'changhe')
+            keyPassword props.getProperty('changhe.keyPassword', '')
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // 仅当本地存在密钥文件时才签名；公开仓库克隆后无密钥，可正常运行 debug 版
+            def ksFile = file('../changhe.keystore')
+            if (ksFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+}

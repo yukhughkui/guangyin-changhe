@@ -1,0 +1,43 @@
+# ===== Android 构建产物 =====
+*.apk
+!apk/
+!apk/*.apk
+*.aar
+*.aab
+*.ap_
+*.dex
+bin/
+gen/
+out/
+.gradle/
+build/
+
+# ===== 本地配置 / 密钥（切勿入库） =====
+local.properties
+*.keystore
+changhe.keystore
+
+# ===== IDE =====
+.idea/
+*.iml
+*.iml~
+*.swp
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Python =====
+__pycache__/
+*.pyc
+
+# ===== 开发期临时产物（非源码） =====
+_sync_check.py
+_verify_bridge.py
+_verify_web.py
+_shots.py
+_s_*.png
+_*.html
+_bridge_test.html
+_webtest.html
+_desktop.png

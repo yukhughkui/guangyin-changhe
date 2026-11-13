@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">岁月长河</string>
+    <string name="widget_name_small">岁月长河 · 小</string>
+    <string name="widget_name_wide">岁月长河 · 宽</string>
+    <string name="widget_desc_small">2 × 2 · 已在此间与最近的一个刻度</string>
+    <string name="widget_desc_wide">4 × 2 · 已在此间、前方尚有与最近的一个刻度</string>
+</resources>

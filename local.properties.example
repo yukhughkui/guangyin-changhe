@@ -1,0 +1,10 @@
+# 复制本文件为 local.properties（该文件已被 .gitignore 忽略，不会入库）
+# 填入你本机的 Android SDK 路径与签名信息
+
+sdk.dir=C:/Users/28215/.local/lib/android-sdk
+
+# 签名密钥（公开仓库不含 changhe.keystore，请自行保管；丢失将无法更新已发布版本）
+changhe.storeFile=../changhe.keystore
+changhe.storePassword=你的密钥库密码
+changhe.keyAlias=changhe
+changhe.keyPassword=你的密钥密码
