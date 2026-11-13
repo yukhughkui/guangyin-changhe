@@ -75,6 +75,11 @@ public final class ChangheData {
 
     /** 四段文本，顺序与 widget 布局中的控件一一对应：已在此间 / 前方尚有 / 最近名称 / 最近天数。 */
     public static String[] texts(Context context) {
+        return texts(context, false);
+    }
+
+    /** compact=true 时只取「年数」，用于 2×2 小尺寸，避免内容撑爆单元格而底部被裁掉。 */
+    public static String[] texts(Context context, boolean compact) {
         Snapshot s = load(context);
         LocalDate today = LocalDate.now();
         LocalDate end = safePlusYears(s.birth, s.horizon);
@@ -82,12 +87,12 @@ public final class ChangheData {
         Period lived = betweenNonNegative(s.birth, today);
         Period ahead = betweenNonNegative(today, end);
 
-        String livedText = "已在此间 " + durSentence(lived);
+        String livedText = "已在此间 " + (compact ? yearsOnly(lived) : durSentence(lived));
         String aheadText;
         if (!today.isBefore(end)) {
             aheadText = "前方尚有 · 且看此刻";
         } else {
-            aheadText = "前方尚有 " + durSentence(ahead);
+            aheadText = "前方尚有 " + (compact ? yearsOnly(ahead) : durSentence(ahead));
         }
 
         String markName = "最近 · 打开光阴长河同步一次";
@@ -115,6 +120,11 @@ public final class ChangheData {
             if (p.getDays() > 0) sb.append(p.getDays()).append(" 天");
         }
         return sb.toString().trim();
+    }
+
+    /** 只保留年数，如「24 年」，给 2×2 小部件用。 */
+    private static String yearsOnly(Period p) {
+        return p.getYears() + " 年";
     }
 
     private static int clampHorizon(int h) {

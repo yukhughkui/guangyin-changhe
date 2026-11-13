@@ -1385,10 +1385,11 @@ $("setBirth").addEventListener("change",function(){
   }
   save(); render(); toast("出生日期已记下");
 });
-/* 想走到的年岁：点击弹出数字框（不自动弹键盘，自己点输入框才弹） */
+/* 想走到的年岁：点击弹出数字框 + 确定 */
 $("fHorizon").addEventListener("click",function(){
   $("numInput").value = S.horizon;
   $("numSheetBg").classList.add("show");
+  setTimeout(function(){ try{ $("numInput").focus(); }catch(e){} }, 200);
 });
 $("numCancel").addEventListener("click",function(){ $("numSheetBg").classList.remove("show"); });
 $("numSheetBg").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });

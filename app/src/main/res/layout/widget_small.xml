@@ -12,28 +12,12 @@
     android:paddingBottom="12dp">
 
     <TextView
-        android:id="@+id/w_brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="光阴长河"
-        android:textColor="@color/ink3"
-        android:textSize="10sp"
-        android:fontFamily="serif" />
-
-    <View
-        android:layout_width="22dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/jade" />
-
-    <TextView
         android:id="@+id/w_lived"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="已在此间 —"
         android:textColor="@color/jade"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:maxLines="2"
         android:ellipsize="end"
         android:lineSpacingExtra="2dp"
