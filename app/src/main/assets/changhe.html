@@ -249,7 +249,9 @@ html[data-theme="night"] .wd-ripple{background-image:url("data:image/svg+xml,%3C
 .seg{display:inline-flex;border:1px solid var(--line-2);border-radius:99px;overflow:hidden;flex:none}
 .seg button{font-size:13px;padding:5px 16px;color:var(--ink-2);background:transparent;line-height:1.4}
 .seg button.on{background:var(--jade);color:#fff}
-.sheet.lunar .dp-col[data-unit=y]{display:none}
+.sheet-bg.lunar .dp-col[data-unit=y]{display:none}
+.sheet-bg.lunar .dp-i{font-family:var(--serif);font-variant-numeric:normal;letter-spacing:.06em}
+.sheet-bg.lunar .dp-display{font-family:var(--serif);font-variant-numeric:normal;letter-spacing:.08em}
 /* 自述：字号、行距、段距全篇一致，不加粗、不缩字、不夹空格 */
 .about{font-family:var(--serif);font-size:14px;line-height:2.1;color:var(--ink-2);letter-spacing:.035em}
 .about p{margin:0 0 18px}
@@ -505,9 +507,9 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
       </div>
     </div>
     <div class="field dp-lunar-toggle" id="evLunarField" style="display:none">
-      <div><label>历法</label><small>父母生日多为农历</small></div>
+      <div><label>历法</label></div>
       <div class="seg" id="evLunarSeg">
-        <button type="button" data-l="0" class="on">阳历</button>
+        <button type="button" data-l="0" class="on">公历</button>
         <button type="button" data-l="1">农历</button>
       </div>
     </div>
@@ -1614,7 +1616,7 @@ function dpBuild(init){
   for(var y=Y0;y<=Y1;y++) yc.innerHTML+='<div class="dp-i" data-v="'+y+'">'+y+'</div>';
   yc.innerHTML+=dpPad();
   var mc=$("dpM"); mc.innerHTML=dpPad();
-  for(var mo=1;mo<=12;mo++) mc.innerHTML+='<div class="dp-i" data-v="'+mo+'">'+pad(mo)+'</div>';
+  for(var mo=1;mo<=12;mo++) mc.innerHTML+='<div class="dp-i" data-v="'+mo+'">'+(dpState.lunar?lunarMonthCN(mo):pad(mo))+'</div>';
   mc.innerHTML+=dpPad();
   dpState.y = init.getFullYear();
   dpState.m = init.getMonth()+1;
@@ -1631,7 +1633,7 @@ function dpBuild(init){
 function dpBuildDays(){
   var dc=$("dpD"); dc.innerHTML=dpPad();
   var n=dpLunarMaxD();
-  for(var d=1;d<=n;d++) dc.innerHTML+='<div class="dp-i" data-v="'+d+'">'+pad(d)+'</div>';
+  for(var d=1;d<=n;d++) dc.innerHTML+='<div class="dp-i" data-v="'+d+'">'+(dpState.lunar?lunarDayCN(d):pad(d))+'</div>';
   dc.innerHTML+=dpPad();
 }
 function dpScrollTo(u, v){
