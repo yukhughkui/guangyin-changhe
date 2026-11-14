@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +45,10 @@ public class MainActivity extends Activity {
         setContentView(web);
         // 启动即按已存主题设置系统栏，避免夜模式下短暂闪白
         applyTheme(getSharedPreferences(PREFS_NIGHT, MODE_PRIVATE).getBoolean(KEY_NIGHT, false));
+
+        // 常驻通知：申请权限并按设置排程 / 拉起前台服务
+        requestNotifyPermission();
+        applyNotify(ChangheData.load(this).notifyEnabled);
 
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
@@ -121,6 +127,7 @@ public class MainActivity extends Activity {
                     e.putLong(ChangheData.KEY_SYNC_TIME, System.currentTimeMillis());
                     e.apply();
                     ChangheWidget.refresh(MainActivity.this);
+                    applyNotify(ChangheData.load(MainActivity.this).notifyEnabled);
                 } catch (Exception ignored) {
                 }
             }
@@ -225,6 +232,54 @@ public class MainActivity extends Activity {
                 }
             }
             window.getDecorView().setSystemUiVisibility(flags);
+        }
+    }
+
+    /** 申请通知权限（Android 13+ 才需要）；旧版本默认授予，无需弹窗。 */
+    private void requestNotifyPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission("android.permission.POST_NOTIFICATIONS")
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1001);
+            }
+        }
+    }
+
+    /** 按开关排程每日 7:30 闹钟，并在授权且处于当日活动时段时拉起常驻服务。 */
+    private void applyNotify(boolean enabled) {
+        if (enabled) {
+            NotifyScheduler.arm(this);
+            if (NotifyScheduler.hasNotifyPermission(this) && inActiveWindow()) {
+                try {
+                    startForegroundService(new Intent(this, ChangheNotifyService.class));
+                } catch (Exception ignored) {
+                }
+            }
+        } else {
+            NotifyScheduler.cancel(this);
+            stopService(new Intent(this, ChangheNotifyService.class));
+        }
+    }
+
+    /** 活动时段：7:30 至 23:59，贴合「每天 7:30 起常驻」的设定。 */
+    private boolean inActiveWindow() {
+        java.time.LocalTime now = java.time.LocalTime.now();
+        return !now.isBefore(java.time.LocalTime.of(7, 30))
+                && now.isBefore(java.time.LocalTime.of(23, 59));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            boolean granted = grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+            if (granted && inActiveWindow()) {
+                try {
+                    startForegroundService(new Intent(this, ChangheNotifyService.class));
+                } catch (Exception ignored) {
+                }
+            }
         }
     }
 

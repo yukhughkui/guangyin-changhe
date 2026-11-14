@@ -4,85 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/widget_bg"
     android:gravity="center_vertical"
-    android:background="@drawable/widget_bg_light"
     android:paddingLeft="14dp"
     android:paddingRight="14dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
-    <!-- 已在此间 -->
-    <TextView
-        android:id="@+id/w_lbl_lived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="已在此间"
-        android:textColor="@color/w_label_light"
-        android:textSize="9sp"
-        android:singleLine="true"
-        android:fontFamily="serif" />
-
-    <!-- 大数 24 年 -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="true"
-        android:layout_marginTop="1dp">
-
-        <TextView
-            android:id="@+id/w_hero_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="24"
-            android:textColor="@color/w_hero_light"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:fontFamily="serif" />
-
-        <TextView
-            android:id="@+id/w_hero_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="年"
-            android:textColor="@color/w_sub_light"
-            android:textSize="11sp"
-            android:layout_marginLeft="3dp"
-            android:fontFamily="serif" />
-    </LinearLayout>
-
-    <!-- 4 个月 30 天 -->
-    <TextView
-        android:id="@+id/w_sub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="4 个月 30 天"
-        android:textColor="@color/w_sub_light"
-        android:textSize="9sp"
-        android:layout_marginTop="1dp"
-        android:singleLine="true"
-        android:fontFamily="serif" />
-
-    <!-- 水纹（浅色）/ 分隔线（深色），按主题切换可见性 -->
-    <ImageView
-        android:id="@+id/w_ripple"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/widget_ripple" />
-
-    <View
-        android:id="@+id/w_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/w_line_dark"
-        android:visibility="gone" />
-
-    <!-- 最近 元旦 / 47 天 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,12 +18,82 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/w_mark_lbl"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:text="已在此间"
+            android:textColor="@color/jade"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:fontFamily="serif" />
+
+        <TextView
+            android:id="@+id/w_lived_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="6dp"
+            android:text="—"
+            android:textColor="@color/ink2"
+            android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:fontFamily="serif" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:text="前方尚有"
+            android:textColor="@color/jade"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:fontFamily="serif" />
+
+        <TextView
+            android:id="@+id/w_ahead_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="6dp"
+            android:text="—"
+            android:textColor="@color/ink2"
+            android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:fontFamily="serif" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="7dp"
+        android:background="@color/widget_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="最近"
-            android:textColor="@color/w_label_light"
-            android:textSize="9sp"
+            android:textColor="@color/jade"
+            android:textSize="11sp"
+            android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
 
@@ -104,42 +102,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="5dp"
-            android:text="元旦"
-            android:textColor="@color/w_mark_light"
-            android:textSize="10sp"
+            android:layout_marginLeft="6dp"
+            android:text="—"
+            android:textColor="@color/ink2"
+            android:textSize="11sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
 
         <TextView
-            android:id="@+id/w_days_num"
+            android:id="@+id/w_mark_days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:text="47"
-            android:textColor="@color/w_days_light"
+            android:layout_marginLeft="8dp"
+            android:text="—"
+            android:textColor="@color/jade"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:fontFamily="serif" />
-
-        <TextView
-            android:id="@+id/w_days_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="天"
-            android:textColor="@color/w_sub_light"
-            android:textSize="10sp"
+            android:singleLine="true"
             android:fontFamily="serif" />
     </LinearLayout>
-
-    <!-- 4×2 才显示：小尺寸保留 id 但隐藏 -->
-    <TextView
-        android:id="@+id/w_ahead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:visibility="gone" />
 
 </LinearLayout>

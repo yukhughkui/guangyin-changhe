@@ -246,6 +246,10 @@ html[data-theme="night"] .wd-ripple{background-image:url("data:image/svg+xml,%3C
 .switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.15);transition:transform .25s}
 .switch.on{background:var(--jade)}
 .switch.on::after{transform:translateX(18px)}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:99px;overflow:hidden;flex:none}
+.seg button{font-size:13px;padding:5px 16px;color:var(--ink-2);background:transparent;line-height:1.4}
+.seg button.on{background:var(--jade);color:#fff}
+.sheet.lunar .dp-col[data-unit=y]{display:none}
 /* 自述：字号、行距、段距全篇一致，不加粗、不缩字、不夹空格 */
 .about{font-family:var(--serif);font-size:14px;line-height:2.1;color:var(--ink-2);letter-spacing:.035em}
 .about p{margin:0 0 18px}
@@ -459,6 +463,10 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
           <div><label>夜航</label></div>
           <button class="switch" id="setNight" aria-label="夜航"></button>
         </div>
+        <div class="field">
+          <div><label>常驻倒计时通知</label><small>每日 7:30 起，状态栏常驻最近的刻度倒计时</small></div>
+          <button class="switch" id="setNotify" aria-label="常驻通知"></button>
+        </div>
       </div>
 
       <div class="section-rule"></div>
@@ -494,6 +502,13 @@ html[data-theme="night"] .sheet-actions .primary{color:#111917}
           <div class="dp-col" data-unit="m" id="dpM"></div>
           <div class="dp-col" data-unit="d" id="dpD"></div>
         </div>
+      </div>
+    </div>
+    <div class="field dp-lunar-toggle" id="evLunarField" style="display:none">
+      <div><label>历法</label><small>父母生日多为农历</small></div>
+      <div class="seg" id="evLunarSeg">
+        <button type="button" data-l="0" class="on">阳历</button>
+        <button type="button" data-l="1">农历</button>
       </div>
     </div>
     <div class="sheet-actions">
@@ -559,7 +574,9 @@ var DEFAULT = {
     {id:"m2", name:"母亲的生日", date:"1972-07-08"},
     {id:"m3", name:"姐姐的生日", date:"1998-11-02"},
     {id:"m4", name:"自己的生日", date:"2002-06-15"}
-  ]
+  ],
+  notify:true,
+  notifyTime:"07:30"
 };
 var S = load();
 var editing = {event:false, age:false, memorial:false};
@@ -733,6 +750,45 @@ function diff(a, b){
 }
 function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
 
+/* ---------- 农历月日 → 阳历日期（纪念日农历支持） ---------- */
+var LUNAR_MONTH_CN = ["正月","二月","三月","四月","五月","六月","七月","八月","九月","十月","冬月","腊月"];
+function lunarMonthCN(m){ return LUNAR_MONTH_CN[((m-1)%12+12)%12]; }
+function lunarDayCN(n){
+  var d = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十",
+           "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十",
+           "廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
+  return d[((n-1)%30+30)%30];
+}
+/* 从 fromMs 起向前扫描，找第一个农历 lm 月 ld 日对应的阳历日期（匹配非闰月） */
+function lunarMDToSolar(fromMs, lm, ld){
+  if(!lm || !ld) return null;
+  var from = new Date(fromMs); from.setHours(12,0,0,0);
+  var targetMonth = lunarMonthCN(lm);
+  var limit = new Date(from.getTime()); limit.setFullYear(limit.getFullYear()+4);
+  var d = new Date(from.getTime()), i, p, dn;
+  for(i=0;i<1600;i++){
+    p = lunarParts(d);
+    if(p){ dn = parseInt(p.day,10); if(!isNaN(dn) && p.month===targetMonth && dn===ld){
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    } }
+    d.setDate(d.getDate()+1);
+    if(d.getTime() > limit.getTime()) break;
+  }
+  /* 个别月份只有 29 天，若选了 30，则取该月最后一天（廿九） */
+  if(ld>29){
+    d = new Date(from.getTime());
+    for(i=0;i<1600;i++){
+      p = lunarParts(d);
+      if(p){ dn = parseInt(p.day,10); if(!isNaN(dn) && p.month===targetMonth && dn===29){
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      } }
+      d.setDate(d.getDate()+1);
+      if(d.getTime() > limit.getTime()) break;
+    }
+  }
+  return null;
+}
+
 /* ---------- 时节：公历固定 + 权威农历表 ---------- */
 var SOLAR = [
   {name:"元旦", m:1, d:1},
@@ -829,10 +885,15 @@ function buildAges(){
   }
   return a;
 }
-/* 纪念日按每年重复，只取月日 */
+/* 纪念日按每年重复，只取月日；农历纪念日换算成下一个阳历日期 */
 function buildMemorials(now){
   var ds = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   return S.memorials.map(function(m){
+    if(m.lunar){
+      var sd = lunarMDToSolar(ds.getTime(), m.lm, m.ld);
+      return {id:m.id, name:m.name, date: sd||ds, guess:false, annual:true,
+              lunar:true, lm:m.lm, ld:m.ld, miss: !sd};
+    }
     var base = pDate(m.date), y = now.getFullYear();
     var d = new Date(y, base.getMonth(), base.getDate());
     if(d < ds) d = new Date(y+1, base.getMonth(), base.getDate());
@@ -876,7 +937,7 @@ function markHTML(m, opts){
     ' data-ts="'+m.date.getTime()+'" data-guess="'+(m.guess?1:0)+'" data-key="'+m.name+'|'+m.date.getTime()+'"'+
     ' data-id="'+(m.id||"")+'" data-mode="'+(opts&&opts.mode||"event")+'">'+
     (opts&&opts.deletable ? '<button class="del-btn" data-del="'+(m.id||"")+'">×</button>' : "")+
-    '<div class="mark-top"><span class="mark-name">'+m.name+'</span><span class="mark-date">'+dot(m.date)+(m.guess?" ·推算":"")+'</span></div>'+
+    '<div class="mark-top"><span class="mark-name">'+m.name+'</span><span class="mark-date">'+dot(m.date)+(m.lunar?(" · 农历"+lunarMonthCN(m.lm)+lunarDayCN(m.ld)):"")+(m.guess?" ·推算":"")+'</span></div>'+
     '<div class="mark-main">'+main+'</div>'+
     '<div class="mark-sub'+(isToday||past?"":" js-sub")+'">'+sub+'</div>'+
     '<div class="mark-line"><i style="width:'+pct.toFixed(2)+'%"></i></div>'+
@@ -1186,6 +1247,7 @@ function render(){
   $("setAgesVal").textContent = S.ages.join(" · ") + " ›";
   $("setSeconds").classList.toggle("on", !!S.showSeconds);
   $("setNight").classList.toggle("on", !!S.night);
+  $("setNotify").classList.toggle("on", !!S.notify);
   $("notice").style.display = S.customized ? "none" : "flex";
   $("themeBtn").textContent = S.night ? "昼" : "夜";
   var allMarks = document.querySelectorAll(".mark");
@@ -1318,10 +1380,22 @@ function openSheet(id, mode){
   $("evName").placeholder      = isAge ? "例如：27" : "例如：研究生毕业";
   $("evName").value = isAge ? (item ? String(item.age) : "") : (item ? item.name : "");
   $("evDateField").style.display = isAge ? "none" : "";
+  $("evLunarField").style.display = (sheetMode==="memorial") ? "" : "none";
   if(!isAge){
     var init;
-    if(item){ init = pDate(item.date); }
-    else { var t=new Date(); t.setFullYear(t.getFullYear()+1); init = t; }
+    if(item && item.lunar){
+      dpState.lunar = true;
+      init = new Date(2000, (item.lm||1)-1, Math.min(item.ld||1,30));
+    }else if(item){
+      dpState.lunar = false;
+      init = pDate(item.date);
+    }else{
+      dpState.lunar = false;
+      var t=new Date(); t.setFullYear(t.getFullYear()+1); init = t;
+    }
+    $("sheetBg").classList.toggle("lunar", dpState.lunar);
+    var segBtns = $("evLunarSeg").querySelectorAll("button");
+    for(var si=0;si<segBtns.length;si++) segBtns[si].classList.toggle("on", segBtns[si].getAttribute("data-l")===(dpState.lunar?"1":"0"));
     dpBuild(init);
   }
   $("evDateHint").textContent = sheetMode==="memorial" ? "按每年重复，只需要月日；年份不影响" : "它将在哪一天抵达";
@@ -1386,7 +1460,10 @@ $("setBirth").addEventListener("change",function(){
   if(!this.value) return;
   S.birth=this.value; S.customized=true;
   for(var i=0;i<S.memorials.length;i++){
-    if(S.memorials[i].name==="自己的生日"){ S.memorials[i].date=this.value; break; }
+    if(S.memorials[i].name==="自己的生日"){
+      if(!S.memorials[i].lunar) S.memorials[i].date=this.value;
+      break;
+    }
   }
   save(); render(); toast("出生日期已记下");
 });
@@ -1434,6 +1511,7 @@ function renderAgesSheet(){
 }
 $("setSeconds").addEventListener("click",function(){ S.showSeconds=!S.showSeconds; save(); render(); });
 $("setNight").addEventListener("click",function(){ S.night=!S.night; save(); render(); });
+$("setNotify").addEventListener("click",function(){ S.notify=!S.notify; S.customized=true; save(); render(); toast(S.notify?"已开启常驻通知":"已关闭"); });
 $("resetBtn").addEventListener("click",function(){
   if(!window.confirm("恢复示例数据？你添加的节点与纪念日会被清掉。")) return;
   S=JSON.parse(JSON.stringify(DEFAULT)); save(); render(); go("river"); toast("已恢复示例");
@@ -1466,12 +1544,34 @@ $("evSave").addEventListener("click",function(){
     return;
   }
   if(!n){ toast("先给它一个名字"); return; }
-  if(!d){ toast("选一个日期"); return; }
   list = (sheetMode==="memorial") ? S.memorials : S.events;
-  if(sheetEditId){
-    for(i=0;i<list.length;i++) if(list[i].id===sheetEditId){ list[i].name=n; list[i].date=d; break; }
+  if(sheetMode==="memorial"){
+    if(dpState.lunar){
+      if(!dpState.m || !dpState.d){ toast("选一个农历日期"); return; }
+    }else{
+      d = dpState.y+"-"+pad(dpState.m)+"-"+pad(dpState.d);
+      if(!d){ toast("选一个日期"); return; }
+    }
   }else{
-    list.push({id:(sheetMode==="memorial"?"m":"e")+Date.now(), name:n, date:d});
+    d = dpState.y+"-"+pad(dpState.m)+"-"+pad(dpState.d);
+    if(!d){ toast("选一个日期"); return; }
+  }
+  if(sheetEditId){
+    for(i=0;i<list.length;i++) if(list[i].id===sheetEditId){
+      list[i].name=n;
+      if(sheetMode==="memorial"){
+        if(dpState.lunar){ list[i].lunar=true; list[i].lm=dpState.m; list[i].ld=dpState.d; delete list[i].date; }
+        else { list[i].lunar=false; list[i].date=d; delete list[i].lm; delete list[i].ld; }
+      }else{ list[i].date=d; }
+      break;
+    }
+  }else{
+    if(sheetMode==="memorial"){
+      if(dpState.lunar) list.push({id:"m"+Date.now(), name:n, lunar:true, lm:dpState.m, ld:dpState.d});
+      else list.push({id:"m"+Date.now(), name:n, date:d});
+    }else{
+      list.push({id:"e"+Date.now(), name:n, date:d});
+    }
   }
   S.customized=true; save();
   $("sheetBg").classList.remove("show");
@@ -1502,10 +1602,11 @@ $("ageList").addEventListener("click", function(e){
 });
 
 /* ---------- 页内日期滚轮：替代系统日期选择框，定位统一 ---------- */
-var dpState = {y:2002, m:6, d:15, _my:0};
+var dpState = {y:2002, m:6, d:15, _my:0, lunar:false};
 function dpPad(){ return '<div class="dp-pad"></div>'; }
 function dpDaysInMonth(y,m){ return new Date(y, m, 0).getDate(); }
 function dpColEl(u){ return u==="y"?$("dpY"):u==="m"?$("dpM"):$("dpD"); }
+function dpLunarMaxD(){ return dpState.lunar ? 30 : dpDaysInMonth(dpState.y, dpState.m); }
 function dpBuild(init){
   var Y0=1940, Y1=new Date().getFullYear()+120;
   var yc=$("dpY"); yc.innerHTML=dpPad();
@@ -1516,18 +1617,19 @@ function dpBuild(init){
   mc.innerHTML+=dpPad();
   dpState.y = init.getFullYear();
   dpState.m = init.getMonth()+1;
-  dpState.d = Math.min(init.getDate(), dpDaysInMonth(dpState.y, dpState.m));
+  dpState.d = Math.min(init.getDate(), dpLunarMaxD());
   dpState._my = dpState.y*12 + dpState.m;
   dpBuildDays();
   /* 等布局就绪再定位，避免 scrollTop 未生效而被 dpRead 读回首项 */
   requestAnimationFrame(function(){
-    dpScrollTo("y", dpState.y); dpScrollTo("m", dpState.m); dpScrollTo("d", dpState.d);
+    if(!dpState.lunar) dpScrollTo("y", dpState.y);
+    dpScrollTo("m", dpState.m); dpScrollTo("d", dpState.d);
     dpPaint();
   });
 }
 function dpBuildDays(){
   var dc=$("dpD"); dc.innerHTML=dpPad();
-  var n=dpDaysInMonth(dpState.y, dpState.m);
+  var n=dpLunarMaxD();
   for(var d=1;d<=n;d++) dc.innerHTML+='<div class="dp-i" data-v="'+d+'">'+pad(d)+'</div>';
   dc.innerHTML+=dpPad();
 }
@@ -1546,14 +1648,20 @@ function dpHighlight(u){
   for(i=0;i<items.length;i++) items[i].classList.toggle("sel", +items[i].getAttribute("data-v")===dpState[u]);
 }
 function dpPaint(){
-  $("dpDisplay").textContent = dpState.y+" 年 "+pad(dpState.m)+" 月 "+pad(dpState.d)+" 日";
-  dpHighlight("y"); dpHighlight("m"); dpHighlight("d");
+  if(dpState.lunar){
+    $("dpDisplay").textContent = "农历 "+lunarMonthCN(dpState.m)+lunarDayCN(dpState.d);
+  }else{
+    $("dpDisplay").textContent = dpState.y+" 年 "+pad(dpState.m)+" 月 "+pad(dpState.d)+" 日";
+  }
+  if(!dpState.lunar) dpHighlight("y");
+  dpHighlight("m"); dpHighlight("d");
 }
 function dpRefresh(){
-  dpRead("y"); dpRead("m"); dpRead("d");
+  if(!dpState.lunar) dpRead("y");
+  dpRead("m"); dpRead("d");
   var my = dpState.y*12 + dpState.m;
   if(my !== dpState._my){ dpState._my = my; dpBuildDays(); }
-  var maxD = dpDaysInMonth(dpState.y, dpState.m);
+  var maxD = dpLunarMaxD();
   if(dpState.d > maxD) dpState.d = maxD;
   dpScrollTo("d", dpState.d);
   dpPaint();
@@ -1562,6 +1670,24 @@ function dpOnScroll(){ clearTimeout(dpOnScroll._t); dpOnScroll._t=setTimeout(dpR
 $("dpY").addEventListener("scroll", dpOnScroll);
 $("dpM").addEventListener("scroll", dpOnScroll);
 $("dpD").addEventListener("scroll", dpOnScroll);
+$("evLunarSeg").addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest("button") : null;
+  if(!b || b.parentNode!==this) return;
+  var l = b.getAttribute("data-l")==="1";
+  if(l===dpState.lunar) return;
+  dpState.lunar = l;
+  var btns=this.querySelectorAll("button");
+  for(var bi=0;bi<btns.length;bi++) btns[bi].classList.toggle("on", btns[bi].getAttribute("data-l")===(l?"1":"0"));
+  $("sheetBg").classList.toggle("lunar", l);
+  if(l){
+    if(dpState.m>12) dpState.m=1;
+    if(dpState.d>30) dpState.d=30;
+    dpBuild(new Date(2000, dpState.m-1, dpState.d));
+  }else{
+    var t=new Date(); t.setFullYear(t.getFullYear()+1);
+    dpBuild(new Date(t.getFullYear(), dpState.m-1, dpState.d));
+  }
+});
 
 render();
 var hash = location.hash.replace("#","");

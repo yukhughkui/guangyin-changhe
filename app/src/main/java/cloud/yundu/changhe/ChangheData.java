@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public final class ChangheData {
         public LocalDate birth = LocalDate.parse(DEFAULT_BIRTH);
         public int horizon = DEFAULT_HORIZON;
         public boolean synced = false;
+        public boolean notifyEnabled = true;
+        public String notifyTime = "07:30";
         public final List<Mark> marks = new ArrayList<>();
     }
 
@@ -52,6 +56,8 @@ public final class ChangheData {
             JSONObject o = new JSONObject(json);
             s.birth = LocalDate.parse(o.optString("birth", DEFAULT_BIRTH));
             s.horizon = clampHorizon(o.optInt("horizon", DEFAULT_HORIZON));
+            s.notifyEnabled = o.optBoolean("notify", true);
+            s.notifyTime = o.optString("notifyTime", "07:30");
             JSONArray arr = o.optJSONArray("marks");
             if (arr != null) {
                 for (int i = 0; i < arr.length(); i++) {
@@ -200,5 +206,62 @@ public final class ChangheData {
 
     private static Period betweenNonNegative(LocalDate a, LocalDate b) {
         return b.isBefore(a) ? Period.ZERO : Period.between(a, b);
+    }
+
+    /** 最近节点的实时倒计时（月/天/小时/分）与寄语分级。 */
+    public static final class Countdown {
+        public boolean valid = false;
+        public String name = "未设置";
+        public long months = 0;
+        public long days = 0;
+        public long hours = 0;
+        public long minutes = 0;
+        public long totalDays = 0;
+    }
+
+    /** 在全部已同步的刻度里，挑出此刻之后最近的那个，算出到当天零点的倒计时。 */
+    public static Countdown nearestCountdown(Context context) {
+        Snapshot s = load(context);
+        Countdown c = new Countdown();
+        if (!s.synced) return c;
+        LocalDateTime now = LocalDateTime.now();
+        long bestMs = Long.MAX_VALUE;
+        Mark bestMark = null;
+        for (Mark m : s.marks) {
+            LocalDateTime target = LocalDateTime.of(m.date, LocalTime.MIDNIGHT);
+            if (!target.isAfter(now)) continue;
+            long ms = java.time.Duration.between(now, target).toMillis();
+            if (ms < bestMs) { bestMs = ms; bestMark = m; }
+        }
+        if (bestMark == null) return c;
+        c.valid = true;
+        c.name = bestMark.name;
+        c.totalDays = bestMs / 86400000L;
+        LocalDateTime target = LocalDateTime.of(bestMark.date, LocalTime.MIDNIGHT);
+        long[] parts = borrow(now, target);
+        c.months = parts[0];
+        c.days = parts[1];
+        c.hours = parts[2];
+        c.minutes = parts[3];
+        return c;
+    }
+
+    /** 两个时刻之间的日历借位差：返回 [月, 天, 小时, 分]（年并入月）。 */
+    private static long[] borrow(LocalDateTime a, LocalDateTime b) {
+        int y = b.getYear() - a.getYear();
+        int mo = b.getMonthValue() - a.getMonthValue();
+        int d = b.getDayOfMonth() - a.getDayOfMonth();
+        int h = b.getHour() - a.getHour();
+        int mi = b.getMinute() - a.getMinute();
+        if (mi < 0) { mi += 60; h--; }
+        if (h < 0) { h += 24; d--; }
+        if (d < 0) {
+            LocalDate prev = b.toLocalDate().minusDays(b.getDayOfMonth());
+            d += prev.getDayOfMonth();
+            mo--;
+        }
+        if (mo < 0) { mo += 12; y--; }
+        long totalMonths = (long) y * 12 + mo;
+        return new long[]{totalMonths, d, h, mi};
     }
 }

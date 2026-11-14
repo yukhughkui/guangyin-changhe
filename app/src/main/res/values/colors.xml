@@ -8,18 +8,4 @@
     <color name="ink">#22302D</color>
     <color name="ink2">#5C6C67</color>
     <color name="ink3">#97A7A1</color>
-
-    <!-- 小组件主题色：素白（浅）/ 夜航（深），与 App 日、夜主题同源 -->
-    <color name="w_label_light">#97A7A1</color>
-    <color name="w_hero_light">#22302D</color>
-    <color name="w_sub_light">#97A7A1</color>
-    <color name="w_mark_light">#5C6C67</color>
-    <color name="w_days_light">#22302D</color>
-
-    <color name="w_label_dark">#AEBEB8</color>
-    <color name="w_hero_dark">#F4F5F1</color>
-    <color name="w_sub_dark">#7FA79E</color>
-    <color name="w_mark_dark">#D8E0DB</color>
-    <color name="w_days_dark">#F4F5F1</color>
-    <color name="w_line_dark">#4E5E58</color>
 </resources>
