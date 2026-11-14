@@ -6,23 +6,24 @@
     android:orientation="vertical"
     android:background="@drawable/widget_bg"
     android:gravity="center_vertical"
-    android:paddingLeft="14dp"
-    android:paddingRight="14dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="44dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text="已在此间"
             android:textColor="@color/jade"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -32,29 +33,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="5dp"
             android:text="—"
-            android:textColor="@color/ink2"
-            android:textSize="11sp"
-            android:maxLines="2"
+            android:textColor="@color/ink"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:maxLines="1"
             android:ellipsize="end"
-            android:lineSpacingExtra="2dp"
+            android:lineSpacingExtra="0dp"
             android:fontFamily="serif" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="5dp">
+        android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="44dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text="前方尚有"
             android:textColor="@color/jade"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -64,26 +66,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="5dp"
             android:text="—"
-            android:textColor="@color/ink2"
-            android:textSize="11sp"
-            android:maxLines="2"
+            android:textColor="@color/ink"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:maxLines="1"
             android:ellipsize="end"
-            android:lineSpacingExtra="2dp"
+            android:lineSpacingExtra="0dp"
             android:fontFamily="serif" />
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/widget_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1.2"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
@@ -92,7 +96,7 @@
             android:layout_height="wrap_content"
             android:text="最近"
             android:textColor="@color/jade"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -102,10 +106,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="5dp"
             android:text="—"
             android:textColor="@color/ink2"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
@@ -114,10 +118,10 @@
             android:id="@+id/w_mark_days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:text="—"
             android:textColor="@color/jade"
-            android:textSize="13sp"
+            android:textSize="21sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />

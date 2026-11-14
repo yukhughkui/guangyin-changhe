@@ -90,7 +90,7 @@ for p in [r'C:\Windows\Fonts\msyh.ttc', r'C:\Windows\Fonts\simsun.ttc', r'C:\Win
         break
 
 def preview(path, W, H, compact):
-    # 系统小组件选择器缩略图：与 v1.19 真实三行布局一致（标签 + 数值 + 分隔细线 + 最近）
+    # 系统小组件选择器缩略图：与桌面真实三行布局、字号层级一致
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     d.rounded_rectangle([6, 6, W - 6, H - 6], radius=24,
@@ -103,31 +103,42 @@ def preview(path, W, H, compact):
     def f(sz, bold=False):
         return font(r'C:\Windows\Fonts\msyh.ttc', int(sz * k),
                     index=1 if bold else 0) or F
-    f_lbl = f(11, True)
-    f_val = f(11 if compact else 13)
-    f_mark = f(11 if compact else 12)
-    f_days = f(13 if compact else 16, True)
+    sz_lbl = 10 if compact else 12
+    sz_val = 13 if compact else 19
+    sz_mark = 12 if compact else 14
+    sz_days = 22 if compact else 26
+    f_lbl = f(sz_lbl, True)
+    f_val = f(sz_val, True)
+    f_mark = f(sz_mark)
+    f_days = f(sz_days, True)
 
     JADE = (60, 106, 96, 255)
+    INK = (34, 48, 45, 255)
     INK2 = (92, 108, 103, 255)
     LINE = (228, 235, 231, 255)
 
-    x = 20 if compact else 26
-    lw = 52 if compact else 68
-    y1 = 46 if compact else 40
-    y2 = y1 + (34 if compact else 40)
-    ly = y2 + (32 if compact else 38)
-    y3 = ly + (22 if compact else 26)
+    x = 18 if compact else 24
+    lw = 48 if compact else 62
+    y1 = 40 if compact else 24
+    y2 = 110 if compact else 76
+    ly = 170 if compact else 128
+    y3 = 190 if compact else 142
 
-    d.text((x, y1), '已在此间', font=f_lbl, fill=JADE)
-    d.text((x + lw, y1), '24 年 零 4 个月 30 天', font=f_val, fill=INK2)
-    d.text((x, y2), '前方尚有', font=f_lbl, fill=JADE)
-    d.text((x + lw, y2), '55 年 零 7 个月', font=f_val, fill=INK2)
+    def put(px, py, txt, fnt, color, sz, maxsz):
+        d.text((px, py + (maxsz - sz) * k), txt, font=fnt, fill=color)
+
+    put(x, y1, '已在此间', f_lbl, JADE, sz_lbl, sz_val)
+    put(x + lw, y1, '24 年 零 4 个月 30 天', f_val, INK, sz_val, sz_val)
+    put(x, y2, '前方尚有', f_lbl, JADE, sz_lbl, sz_val)
+    put(x + lw, y2, '55 年 零 7 个月', f_val, INK, sz_val, sz_val)
     d.line([(x, ly), (W - x, ly)], fill=LINE, width=2)
-    d.text((x, y3), '最近', font=f_lbl, fill=JADE)
-    d.text((x + lw, y3), '元旦', font=f_mark, fill=INK2)
-    d.text((W - x - (54 if compact else 66), y3 - 2), '47 天',
-           font=f_days, fill=JADE)
+    put(x, y3, '最近', f_lbl, JADE, sz_lbl, sz_days)
+    put(x + (34 if compact else 40), y3, '元旦', f_mark, INK2, sz_mark, sz_days)
+    try:
+        tw = d.textlength('47 天', font=f_days)
+    except Exception:
+        tw = f_days.getsize('47 天')[0]
+    put(W - x - tw, y3, '47 天', f_days, JADE, sz_days, sz_days)
     im.save(path)
 
 
