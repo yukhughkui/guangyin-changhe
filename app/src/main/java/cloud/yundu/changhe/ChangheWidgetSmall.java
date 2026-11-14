@@ -4,4 +4,5 @@ package cloud.yundu.changhe;
 public final class ChangheWidgetSmall extends ChangheWidget {
     @Override protected int layoutId() { return R.layout.widget_small; }
     @Override protected Class<?> providerClass() { return ChangheWidgetSmall.class; }
+    @Override protected boolean compact() { return true; }
 }

@@ -13,8 +13,9 @@ import android.widget.RemoteViews;
  * 沿用初版的组件名 .ChangheWidget，保证升级后桌面上已添加的旧实例不失效；
  * 2×2 由 ChangheWidgetSmall 单独注册，选择器里才有两种尺寸。
  *
- * 本文件为 v1.18：原样回退到 v1.12 的「已验证可用」实现（v1.12 是用户确认能加的最后一版）。
- * 仅做 textViewText + 点击跳转，无主题切换、无 dark 布局、无结构化数据、无任何运行时反射。
+ * v1.18 起原样回退到 v1.12 的「已验证可用」实现：仅做 textViewText + 点击跳转，
+ * 无主题切换、无 dark 布局、无结构化数据、无任何运行时反射。
+ * v1.22 仅新增 compact 标志让 2×2 取「只到年」的短文案，RemoteViews 调用方式未变。
  */
 public class ChangheWidget extends AppWidgetProvider {
 
@@ -22,9 +23,12 @@ public class ChangheWidget extends AppWidgetProvider {
 
     protected Class<?> providerClass() { return ChangheWidget.class; }
 
+    /** 2×2 覆写为 true：数值只到「年」，避免窄卡里「零 X 个月 X 天」被截断。 */
+    protected boolean compact() { return false; }
+
     @Override
     public void onUpdate(Context context, AppWidgetManager manager, int[] appWidgetIds) {
-        for (int id : appWidgetIds) updateOne(context, manager, id, layoutId());
+        for (int id : appWidgetIds) updateOne(context, manager, id, layoutId(), compact());
     }
 
     @Override
@@ -37,28 +41,29 @@ public class ChangheWidget extends AppWidgetProvider {
                 || action.equals(Intent.ACTION_TIME_CHANGED)
                 || action.equals(Intent.ACTION_TIMEZONE_CHANGED)
                 || action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-            refreshClass(context, providerClass(), layoutId());
+            refreshClass(context, providerClass(), layoutId(), compact());
         }
     }
 
     /** 供 Activity 在设置变更后立即刷新全部尺寸。 */
     public static void refresh(Context context) {
-        refreshClass(context, ChangheWidget.class, R.layout.widget_wide);
-        refreshClass(context, ChangheWidgetSmall.class, R.layout.widget_small);
+        refreshClass(context, ChangheWidget.class, R.layout.widget_wide, false);
+        refreshClass(context, ChangheWidgetSmall.class, R.layout.widget_small, true);
     }
 
-    private static void refreshClass(Context context, Class<?> cls, int layout) {
+    private static void refreshClass(Context context, Class<?> cls, int layout, boolean compact) {
         try {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             int[] ids = manager.getAppWidgetIds(new ComponentName(context, cls));
-            for (int id : ids) updateOne(context, manager, id, layout);
+            for (int id : ids) updateOne(context, manager, id, layout, compact);
         } catch (Exception ignored) {
         }
     }
 
-    private static void updateOne(Context context, AppWidgetManager manager, int id, int layout) {
+    private static void updateOne(Context context, AppWidgetManager manager,
+                                  int id, int layout, boolean compact) {
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
-        String[] t = ChangheData.texts(context);
+        String[] t = ChangheData.texts(context, compact);
         views.setTextViewText(R.id.w_lived_val, t[0]);
         views.setTextViewText(R.id.w_ahead_val, t[1]);
         views.setTextViewText(R.id.w_mark_name, t[2]);

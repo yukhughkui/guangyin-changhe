@@ -19,11 +19,11 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="54dp"
+            android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:text="已在此间"
             android:textColor="@color/jade"
-            android:textSize="12sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -36,8 +36,7 @@
             android:layout_marginLeft="8dp"
             android:text="—"
             android:textColor="@color/ink"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="13sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
@@ -51,11 +50,11 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="54dp"
+            android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:text="前方尚有"
             android:textColor="@color/jade"
-            android:textSize="12sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -68,8 +67,7 @@
             android:layout_marginLeft="8dp"
             android:text="—"
             android:textColor="@color/ink"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="13sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
@@ -94,7 +92,7 @@
             android:layout_height="wrap_content"
             android:text="最近"
             android:textColor="@color/jade"
-            android:textSize="12sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -107,7 +105,7 @@
             android:layout_marginLeft="8dp"
             android:text="—"
             android:textColor="@color/ink2"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:fontFamily="serif" />
@@ -119,8 +117,7 @@
             android:layout_marginLeft="8dp"
             android:text="—"
             android:textColor="@color/jade"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:singleLine="true"
             android:fontFamily="serif" />
     </LinearLayout>

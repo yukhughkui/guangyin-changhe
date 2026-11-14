@@ -19,11 +19,11 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="40dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:text="已在此间"
             android:textColor="@color/jade"
-            android:textSize="10sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -37,7 +37,6 @@
             android:text="—"
             android:textColor="@color/ink"
             android:textSize="12sp"
-            android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
             android:lineSpacingExtra="0dp"
@@ -52,11 +51,11 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="40dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:text="前方尚有"
             android:textColor="@color/jade"
-            android:textSize="10sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -70,7 +69,6 @@
             android:text="—"
             android:textColor="@color/ink"
             android:textSize="12sp"
-            android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
             android:lineSpacingExtra="0dp"
@@ -96,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="最近"
             android:textColor="@color/jade"
-            android:textSize="10sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:singleLine="true"
             android:fontFamily="serif" />
@@ -121,8 +119,7 @@
             android:layout_marginLeft="6dp"
             android:text="—"
             android:textColor="@color/jade"
-            android:textSize="21sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:singleLine="true"
             android:fontFamily="serif" />
     </LinearLayout>

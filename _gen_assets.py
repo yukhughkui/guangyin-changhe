@@ -103,14 +103,15 @@ def preview(path, W, H, compact):
     def f(sz, bold=False):
         return font(r'C:\Windows\Fonts\msyh.ttc', int(sz * k),
                     index=1 if bold else 0) or F
-    sz_lbl = 10 if compact else 12
-    sz_val = 13 if compact else 19
-    sz_mark = 12 if compact else 14
-    sz_days = 22 if compact else 26
+    # 标签词是主角；数值退为小字；2×2 只到年
+    sz_lbl = 17 if compact else 20
+    sz_val = 12 if compact else 14
+    sz_mark = 12 if compact else 13
+    sz_days = 14 if compact else 15
     f_lbl = f(sz_lbl, True)
-    f_val = f(sz_val, True)
+    f_val = f(sz_val)
     f_mark = f(sz_mark)
-    f_days = f(sz_days, True)
+    f_days = f(sz_days)
 
     JADE = (60, 106, 96, 255)
     INK = (34, 48, 45, 255)
@@ -118,27 +119,29 @@ def preview(path, W, H, compact):
     LINE = (228, 235, 231, 255)
 
     x = 18 if compact else 24
-    lw = 48 if compact else 62
+    lw = 72 if compact else 100
     y1 = 40 if compact else 24
     y2 = 110 if compact else 76
     ly = 170 if compact else 128
     y3 = 190 if compact else 142
+    txt_lived = '24 年' if compact else '24 年 零 4 个月 30 天'
+    txt_ahead = '55 年' if compact else '55 年 零 7 个月'
 
     def put(px, py, txt, fnt, color, sz, maxsz):
         d.text((px, py + (maxsz - sz) * k), txt, font=fnt, fill=color)
 
-    put(x, y1, '已在此间', f_lbl, JADE, sz_lbl, sz_val)
-    put(x + lw, y1, '24 年 零 4 个月 30 天', f_val, INK, sz_val, sz_val)
-    put(x, y2, '前方尚有', f_lbl, JADE, sz_lbl, sz_val)
-    put(x + lw, y2, '55 年 零 7 个月', f_val, INK, sz_val, sz_val)
+    put(x, y1, '已在此间', f_lbl, JADE, sz_lbl, sz_lbl)
+    put(x + lw, y1, txt_lived, f_val, INK, sz_val, sz_lbl)
+    put(x, y2, '前方尚有', f_lbl, JADE, sz_lbl, sz_lbl)
+    put(x + lw, y2, txt_ahead, f_val, INK, sz_val, sz_lbl)
     d.line([(x, ly), (W - x, ly)], fill=LINE, width=2)
-    put(x, y3, '最近', f_lbl, JADE, sz_lbl, sz_days)
-    put(x + (34 if compact else 40), y3, '元旦', f_mark, INK2, sz_mark, sz_days)
+    put(x, y3, '最近', f_lbl, JADE, sz_lbl, sz_lbl)
+    put(x + (40 if compact else 50), y3, '元旦', f_mark, INK2, sz_mark, sz_lbl)
     try:
         tw = d.textlength('47 天', font=f_days)
     except Exception:
         tw = f_days.getsize('47 天')[0]
-    put(W - x - tw, y3, '47 天', f_days, JADE, sz_days, sz_days)
+    put(W - x - tw, y3, '47 天', f_days, JADE, sz_days, sz_lbl)
     im.save(path)
 
 

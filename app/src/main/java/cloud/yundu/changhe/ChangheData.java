@@ -85,6 +85,11 @@ public final class ChangheData {
      * 标签（已在此间 / 前方尚有 / 最近）为固定文案，写在布局 XML 里并加粗着色强调。
      */
     public static String[] texts(Context context) {
+        return texts(context, false);
+    }
+
+    /** compact=true（2×2）时数值只到「年」，避免窄卡里「零 X 个月 X 天」被截断。 */
+    public static String[] texts(Context context, boolean compact) {
         Snapshot s = load(context);
         LocalDate today = LocalDate.now();
         LocalDate end = safePlusYears(s.birth, s.horizon);
@@ -92,12 +97,12 @@ public final class ChangheData {
         Period lived = betweenNonNegative(s.birth, today);
         Period ahead = betweenNonNegative(today, end);
 
-        String livedVal = durSentence(lived);
+        String livedVal = compact ? (lived.getYears() + " 年") : durSentence(lived);
         String aheadVal;
         if (!today.isBefore(end)) {
             aheadVal = "且看此刻";
         } else {
-            aheadVal = durSentence(ahead);
+            aheadVal = compact ? (ahead.getYears() + " 年") : durSentence(ahead);
         }
 
         String markName = "未设置";
